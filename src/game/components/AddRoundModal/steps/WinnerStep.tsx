@@ -1,10 +1,12 @@
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { useContext, useEffect } from 'react';
+import { useLocale } from '../../../../locales/hooks/useLocale';
 import { AddRoundModalContext } from '../AddRoundModal';
 import { FarnSlider } from '../components/FarnSlider';
 import { WinnerButtonGroup } from '../components/WinnerButtonGroup';
 
 export const WinnerStep = () => {
+  const { t } = useLocale();
   const {
     selectedPlayers, //
     winnerId,
@@ -24,7 +26,7 @@ export const WinnerStep = () => {
       <FarnSlider farn={farn} onFarnChange={setFarn} />
       <FormControlLabel
         control={<Checkbox checked={isSelfTouch} onChange={(_, selfTouch) => setIsSelfTouch(selfTouch)} />}
-        label="Is self-touch? 🤏"
+        label={`${t.isSelfTouch} 🤏`}
       />
     </>
   );

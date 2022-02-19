@@ -3,10 +3,12 @@ import { sum, transpose } from 'ramda';
 import { useContext, useMemo } from 'react';
 import { GameContext } from '../../game/contexts/GameContext';
 import { getScoresForRound } from '../../game/helpers/scoreHelpers';
+import { useLocale } from '../../locales/hooks/useLocale';
 import { PlayersContext } from '../../settings/contexts/PlayersContext';
 import { ScoringSettingsContext } from '../../settings/contexts/ScoringSettingsContext';
 
 export const TablePage = () => {
+  const { t } = useLocale();
   const { players } = useContext(PlayersContext);
   const { rounds } = useContext(GameContext);
   const { settings: scoringSettings } = useContext(ScoringSettingsContext);
@@ -33,7 +35,7 @@ export const TablePage = () => {
               {rounds.length <= 0 ? (
                 <TableRow>
                   <TableCell colSpan={1 + players.length} align="center">
-                    No data to show yet...
+                    {t.noData}
                   </TableCell>
                 </TableRow>
               ) : (

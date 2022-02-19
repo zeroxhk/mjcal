@@ -1,8 +1,10 @@
 import { useTheme } from '@mui/material';
 import { ResponsiveLine } from '@nivo/line';
+import { useLocale } from '../../locales/hooks/useLocale';
 
 export const Chart = ({ data }: { data: { playerName: string; scores: (number | null)[] }[] }) => {
   const theme = useTheme();
+  const { t } = useLocale();
 
   return (
     <ResponsiveLine
@@ -39,13 +41,13 @@ export const Chart = ({ data }: { data: { playerName: string; scores: (number | 
       colors={{ scheme: 'set3' }}
       gridXValues={data.at(0)?.scores.length ?? 0}
       axisBottom={{
-        legend: 'round',
+        legend: t.round,
         legendOffset: 36,
         legendPosition: 'middle',
         tickValues: data.at(0)?.scores.length ?? 0,
       }}
       axisLeft={{
-        legend: 'score',
+        legend: t.score,
         legendOffset: -40,
         legendPosition: 'middle',
       }}

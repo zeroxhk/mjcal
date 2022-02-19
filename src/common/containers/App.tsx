@@ -1,15 +1,17 @@
 import { Container, Icon } from '@mui/material';
 import { ChartPage } from '../../chart/containers/ChartPage';
 import { AddRoundModalContainer } from '../../game/containers/AddRoundModalContainer';
+import { useLocale } from '../../locales/hooks/useLocale';
 import { SettingsPage } from '../../settings/containers/SettingsPage';
 import { TablePage } from '../../table/containers/TablePage';
 import { BottomMenuViewSwitcher } from '../components/BottomMenuViewSwitcher';
 import { Header } from '../components/Header';
-import { AppContextsProvider } from '../contexts/AppContexts';
 
 export const App = () => {
+  const { t } = useLocale();
+
   return (
-    <AppContextsProvider>
+    <>
       <Header />
       <BottomMenuViewSwitcher
         PreView={({ viewId }) => (
@@ -21,25 +23,25 @@ export const App = () => {
           [
             {
               id: 'chart',
-              label: 'Chart',
+              label: t.bottomMenu.chart,
               icon: <Icon>stacked_line_chart</Icon>,
               View: ChartPage,
             },
             {
               id: 'table',
-              label: 'Table',
+              label: t.bottomMenu.table,
               icon: <Icon>list_alt</Icon>,
               View: TablePage,
             },
             {
               id: 'settings',
-              label: 'Settings',
+              label: t.bottomMenu.settings,
               icon: <Icon>settings</Icon>,
               View: SettingsPage,
             },
           ] as const
         }
       />
-    </AppContextsProvider>
+    </>
   );
 };

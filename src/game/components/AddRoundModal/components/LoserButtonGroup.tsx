@@ -1,4 +1,5 @@
 import { FormLabel, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { useLocale } from '../../../../locales/hooks/useLocale';
 import { Player } from '../../../../settings/models/Player';
 
 export const LoserButtonGroup = ({
@@ -12,9 +13,10 @@ export const LoserButtonGroup = ({
   onLoserIdsChange: (loserIds: string[]) => void;
   disabled: boolean;
 }) => {
+  const { t } = useLocale();
   return (
     <Stack>
-      <FormLabel>Loser(s)</FormLabel>
+      <FormLabel>{t.losers}</FormLabel>
       <ToggleButtonGroup
         color="primary"
         value={loserIds}

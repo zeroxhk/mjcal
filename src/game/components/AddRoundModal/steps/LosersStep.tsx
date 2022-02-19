@@ -1,9 +1,11 @@
 import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
 import { useContext, useEffect, useMemo } from 'react';
+import { useLocale } from '../../../../locales/hooks/useLocale';
 import { AddRoundModalContext } from '../AddRoundModal';
 import { LoserButtonGroup } from '../components/LoserButtonGroup';
 
 export const LosersStep = () => {
+  const { t } = useLocale();
   const {
     selectedPlayers, //
     winnerId,
@@ -30,7 +32,7 @@ export const LosersStep = () => {
         <FormGroup>
           <FormControlLabel
             control={<Checkbox checked={isBao} onChange={(_, bao) => setIsBao(bao)} />}
-            label="Is bao?"
+            label={`${t.isBao} 🍞`}
           />
         </FormGroup>
       )}

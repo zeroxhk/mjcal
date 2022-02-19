@@ -1,5 +1,6 @@
 import { Box, Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material';
 import { useMemo } from 'react';
+import { useLocale } from '../../../../locales/hooks/useLocale';
 import { Player } from '../../../../settings/models/Player';
 
 export const CurrentPlayersSelect = ({
@@ -13,10 +14,11 @@ export const CurrentPlayersSelect = ({
 }) => {
   const selectedPlayerIdSet = useMemo(() => new Set(selectedPlayerIds), [selectedPlayerIds]);
   const playerIdToPlayerMap = useMemo(() => new Map(allPlayers.map(player => [player.id, player])), [allPlayers]);
+  const { t } = useLocale();
 
   return (
     <FormControl fullWidth sx={{ mt: 1 }}>
-      <InputLabel>Players</InputLabel>
+      <InputLabel>{t.players}</InputLabel>
       <Select
         multiple
         value={selectedPlayerIds}
@@ -25,7 +27,7 @@ export const CurrentPlayersSelect = ({
           if (newIds.length > 4) return;
           onSelectedPlayerIdsChange(newIds);
         }}
-        input={<OutlinedInput label="Players" />}
+        input={<OutlinedInput label={t.player} />}
         renderValue={selectedPlayerIds => (
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
             {selectedPlayerIds.map(id => (

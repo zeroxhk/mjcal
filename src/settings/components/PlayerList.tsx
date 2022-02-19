@@ -14,30 +14,8 @@ import {
   TextField,
 } from '@mui/material';
 import produce from 'immer';
+import { useLocale } from '../../locales/hooks/useLocale';
 import { createPlayer, Player } from '../models/Player';
-
-/*
-const IsPlayingCheckbox = ({
-  isPlaying,
-  isDisabled,
-  disabledMessage,
-  onChange,
-}: {
-  isPlaying: boolean;
-  isDisabled: boolean;
-  disabledMessage: string;
-  onChange: () => void;
-}) => {
-  const checkbox = <Checkbox checked={isPlaying} disabled={isDisabled} onChange={onChange} />;
-  if (isDisabled)
-    return (
-      <Tooltip title={disabledMessage} arrow enterTouchDelay={0}>
-        <Box component="span">{checkbox}</Box>
-      </Tooltip>
-    );
-  return checkbox;
-};
-*/
 
 export const PlayerList = ({
   players,
@@ -48,6 +26,7 @@ export const PlayerList = ({
   onSetPlayers: (ps: Player[]) => void;
   sx?: SxProps;
 }) => {
+  const { t } = useLocale();
   return (
     <Paper sx={{ flexGrow: 1, display: 'flex', gap: 1, flexDirection: 'column', padding: 2, ...sx }}>
       <Box sx={{ marginBottom: 1 }}>
@@ -57,12 +36,12 @@ export const PlayerList = ({
           onClick={() =>
             onSetPlayers(
               produce(players, draft => {
-                draft.push(createPlayer({ name: `Player ${players.length + 1}` }));
+                draft.push(createPlayer({ name: `${t.player} ${players.length + 1}` }));
               }),
             )
           }
         >
-          Add Player
+          {t.addPlayer}
         </Button>
       </Box>
       <TableContainer>
@@ -80,7 +59,7 @@ export const PlayerList = ({
                 </TableCell>
                 <TableCell>
                   <TextField
-                    label={`Player ${i + 1}`}
+                    label={`${t.player} ${i + 1}`}
                     variant="outlined"
                     InputProps={{
                       startAdornment: (

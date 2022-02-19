@@ -1,5 +1,6 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { createContext, useEffect, useMemo, useState } from 'react';
+import { useLocale } from '../../../locales/hooks/useLocale';
 import { Player } from '../../../settings/models/Player';
 import { createNotTiedRound, RoundWithoutId } from '../../models/Round';
 import { AddRoundModalTrigger } from './components/AddRoundModalTrigger';
@@ -34,6 +35,7 @@ export const AddRoundModal = ({
   players: Player[];
   onAddRound: (r: RoundWithoutId) => void;
 }) => {
+  const { t } = useLocale();
   const playerIdToPlayerMap = useMemo(() => new Map(players.map(player => [player.id, player])), [players]);
 
   const [open, setOpen] = useState(false);
@@ -67,7 +69,7 @@ export const AddRoundModal = ({
     <>
       <AddRoundModalTrigger onClick={() => setOpen(true)} />
       <Dialog open={open} onClose={() => setOpen(false)} fullWidth>
-        <DialogTitle>Add Guk</DialogTitle>
+        <DialogTitle>{t.addRound}</DialogTitle>
         <DialogContent>
           <AddRoundModalContext.Provider
             value={{
@@ -93,11 +95,11 @@ export const AddRoundModal = ({
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)} sx={{ mr: 'auto' }} color="secondary">
-            Cancel
+            {t.cancel}
           </Button>
 
           <Button disabled={step <= 0} onClick={() => setStep(step - 1)}>
-            Back
+            {t.back}
           </Button>
 
           {(({ onClick, text }: { onClick: () => void; text: string }) => (
@@ -107,11 +109,11 @@ export const AddRoundModal = ({
           ))(
             step < STEP_COUNT - 1
               ? {
-                  text: 'Next',
+                  text: t.next,
                   onClick: () => setStep(step + 1),
                 }
               : {
-                  text: 'Done',
+                  text: t.done,
                   onClick: () => {
                     setOpen(false);
                     if (!winnerId) throw new Error('no winnerId found');
