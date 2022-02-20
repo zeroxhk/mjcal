@@ -52,7 +52,7 @@ export const ScrollableChart = ({ data }: { data: { playerName: string; scores: 
       <Box sx={{ overflowX: 'auto', overflowY: 'hidden' }} ref={chartContainerRef}>
         <Box
           sx={{
-            minWidth: `${WIDTH_PER_ROUND * (data.at(0)?.scores.length ?? 1)}px`,
+            minWidth: `${WIDTH_PER_ROUND * (data[0]?.scores.length ?? 1)}px`,
             height: '700px',
             maxHeight: 'calc(80vh - 200px)',
             display: 'flex',

@@ -35,7 +35,7 @@ export const ChartPage = () => {
         <ScrollableChart
           data={scoress
             .map(scores => scan((acc, score) => acc + (score ?? 0), 0, scores))
-            .map((scores, i) => ({ playerName: players[i].name, scores }))}
+            .map((scores, i) => ({ playerName: players[i]?.name ?? '## NO PLAYER FOUND ##', scores }))}
         />
       )}
     </Container>

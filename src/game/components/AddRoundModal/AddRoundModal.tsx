@@ -90,7 +90,7 @@ export const AddRoundModal = ({
               setCanNext,
             }}
           >
-            {[() => <CurrentPlayersSelectStep />, () => <WinnerStep />, () => <LosersStep />][step]()}
+            {[() => <CurrentPlayersSelectStep />, () => <WinnerStep />, () => <LosersStep />][step]?.()}
           </AddRoundModalContext.Provider>
         </DialogContent>
         <DialogActions>

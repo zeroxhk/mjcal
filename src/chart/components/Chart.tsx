@@ -39,12 +39,12 @@ export const Chart = ({ data }: { data: { playerName: string; scores: (number | 
         max: Math.max(...data.flatMap(({ scores }) => scores).map(s => Math.abs(s ?? 0))),
       }}
       colors={{ scheme: 'set3' }}
-      gridXValues={data.at(0)?.scores.length ?? 0}
+      gridXValues={data[0]?.scores.length ?? 0}
       axisBottom={{
         legend: t.round,
         legendOffset: 36,
         legendPosition: 'middle',
-        tickValues: data.at(0)?.scores.length ?? 0,
+        tickValues: data[0]?.scores.length ?? 0,
       }}
       axisLeft={{
         legend: t.score,

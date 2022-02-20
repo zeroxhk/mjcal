@@ -35,11 +35,11 @@ export const createNotTiedRound = ({
 
 // TODO: remove this
 export const createRandomRound = ({ playerIds }: { playerIds: string[] }) => {
-  const winnerId = playerIds[Math.floor(Math.random() * 4)];
+  const winnerId = playerIds[Math.floor(Math.random() * playerIds.length)]!;
   return createNotTiedRound({
     playerIds: playerIds.slice(0, 4),
     winnerId,
-    loserIds: [playerIds.filter(id => id !== winnerId)[Math.floor(Math.random() * 3)]],
+    loserIds: [playerIds.filter(id => id !== winnerId)[Math.floor(Math.random() * 3)]!],
     farn: Math.floor(Math.random() * 7) + 3,
     isBao: false,
     isSelfTouch: false,
