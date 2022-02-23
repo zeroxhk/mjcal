@@ -3,20 +3,20 @@ import { scan, transpose } from 'ramda';
 import { useContext } from 'react';
 import { GameContext } from '../../game/contexts/GameContext';
 import { getScoresForRound } from '../../game/helpers/scoreHelpers';
-import { useLocale } from '../../locales/hooks/useLocale';
+import { useT } from '../../locales/hooks/useT';
 import { PlayersContext } from '../../settings/contexts/PlayersContext';
 import { ScoringSettingsContext } from '../../settings/contexts/ScoringSettingsContext';
 import { ScrollableChart } from '../components/ScrollableChart';
 
 export const ChartPage = () => {
-  const { t } = useLocale();
+  const t = useT();
   const { players } = useContext(PlayersContext);
   const { settings: scoringSettings } = useContext(ScoringSettingsContext);
   const { rounds } = useContext(GameContext);
   const scoress = transpose(rounds.map(round => getScoresForRound(round, { players, scoringSettings })));
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" sx={{ pt: 5 }}>
       {rounds.length <= 0 ? (
         <Box
           sx={{

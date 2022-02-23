@@ -1,10 +1,10 @@
 import { useTheme } from '@mui/material';
 import { ResponsiveLine } from '@nivo/line';
-import { useLocale } from '../../locales/hooks/useLocale';
+import { useT } from '../../locales/hooks/useT';
 
 export const Chart = ({ data }: { data: { playerName: string; scores: (number | null)[] }[] }) => {
   const theme = useTheme();
-  const { t } = useLocale();
+  const t = useT();
 
   return (
     <ResponsiveLine
@@ -32,7 +32,7 @@ export const Chart = ({ data }: { data: { playerName: string; scores: (number | 
           },
         },
       }}
-      margin={{ top: 50, right: 20, bottom: 85, left: 60 }}
+      margin={{ top: 20, right: 20, bottom: 85, left: 60 }}
       yScale={{
         type: 'linear',
         min: -Math.max(...data.flatMap(({ scores }) => scores).map(s => Math.abs(s ?? 0))),

@@ -45,4 +45,21 @@ export default createCopies({
   },
   noData: '未有數據...',
   chartPlaceholderText: '食下糊先有圖睇...',
+  openTable: '開檯',
+  landingPage: {
+    heading: '麻雀計分器',
+    subheading: '唔洗用腦的器',
+  },
+  openTablePage: {
+    scoringSettings: {
+      heading: '點打法？',
+    },
+    players: {
+      heading: '玩家',
+    },
+    firstWuStep: {
+      heading: '搞掂哂！',
+      subheading: '㩒下面個掣食糊！',
+    },
+  },
 });

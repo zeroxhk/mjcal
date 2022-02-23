@@ -12,17 +12,14 @@ export const LocaleContext = createContext<{
   t: Copies;
   setLocale: (localeKey: LocaleKey) => void;
   locale: LocaleKey;
-}>({
-  t: ZH_HK,
-  setLocale: () => {},
-  locale: 'chinglish',
-});
+} | null>(null);
 
 export const LocaleContextProvider = ({ children }: { children: ReactNode }) => {
   const [localeKey, setLocaleKey] = useState<LocaleKey>('zh-hk');
   const [copies, setCopies] = useState<Copies>(ZH_HK);
 
   useEffect(() => {
+    console.log(localeKey);
     (async () => {
       setCopies((await getCopies[localeKey]()).default);
     })();

@@ -1,4 +1,6 @@
-import { RouterViewSwitch } from '../../router/components/RouterViewSwitch';
+import { LandingPage } from '../../landing/containers/LandingPage';
+import { OpenTablePage } from '../../open-table/containers/OpenTablePage';
+import { createRoute, RouterViewSwitch } from '../../router/components/RouterViewSwitch';
 import { Header } from '../components/Header';
 import { GamePage } from './GamePage';
 
@@ -8,10 +10,22 @@ export const App = () => {
       <Header />
       <RouterViewSwitch
         views={[
-          {
-            path: '/game',
+          createRoute({
+            path: '/open-table' as const,
+            component: OpenTablePage,
+          }),
+          createRoute({
+            path: '/game' as const,
             component: GamePage,
-          },
+          }),
+          createRoute({
+            path: '/' as const,
+            component: LandingPage,
+          }),
+          createRoute({
+            path: '/*' as const,
+            redirect: '/',
+          }),
         ]}
       />
     </>

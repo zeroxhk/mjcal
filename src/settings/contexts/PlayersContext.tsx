@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useState } from 'react';
-import { useLocale } from '../../locales/hooks/useLocale';
+import { useT } from '../../locales/hooks/useT';
 import { createPlayer, Player } from '../models/Player';
 
 export const PlayersContext = createContext<{
@@ -11,7 +11,7 @@ export const PlayersContext = createContext<{
 });
 
 export const PlayersContextProvider = ({ children }: { children: ReactNode }) => {
-  const { t } = useLocale();
+  const t = useT();
   const [players, setPlayers] = useState<Player[]>(
     Array.from({ length: 4 }, (_, i) => createPlayer({ name: `${t.player} ${i + 1}` })),
   );

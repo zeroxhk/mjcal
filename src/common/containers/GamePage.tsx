@@ -2,14 +2,13 @@ import { Container, Icon } from '@mui/material';
 import { useMemo } from 'react';
 import { ChartPage } from '../../chart/containers/ChartPage';
 import { AddRoundModalContainer } from '../../game/containers/AddRoundModalContainer';
-import { useLocale } from '../../locales/hooks/useLocale';
+import { useT } from '../../locales/hooks/useT';
 import { SettingsPage } from '../../settings/containers/SettingsPage';
 import { TablePage } from '../../table/containers/TablePage';
 import { BottomMenuViewSwitcher } from '../components/BottomMenuViewSwitcher';
 
 export const GamePage = () => {
-  const { t } = useLocale();
-
+  const t = useT();
   return (
     <BottomMenuViewSwitcher
       PreView={({ viewId }) => (

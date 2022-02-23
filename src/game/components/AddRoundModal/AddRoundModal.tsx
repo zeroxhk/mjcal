@@ -1,9 +1,8 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { createContext, useEffect, useMemo, useState } from 'react';
-import { useLocale } from '../../../locales/hooks/useLocale';
+import { useT } from '../../../locales/hooks/useT';
 import { Player } from '../../../settings/models/Player';
 import { createNotTiedRound, RoundWithoutId } from '../../models/Round';
-import { AddRoundModalTrigger } from './components/AddRoundModalTrigger';
 import { CurrentPlayersSelectStep } from './steps/CurrentPlayerSelectStep';
 import { LosersStep } from './steps/LosersStep';
 import { WinnerStep } from './steps/WinnerStep';
@@ -31,11 +30,13 @@ export const AddRoundModalContext = createContext({
 export const AddRoundModal = ({
   players,
   onAddRound,
+  TriggerComponent,
 }: {
   players: Player[];
   onAddRound: (r: RoundWithoutId) => void;
+  TriggerComponent: ({ onOpenModal }: { onOpenModal: () => void }) => JSX.Element;
 }) => {
-  const { t } = useLocale();
+  const t = useT();
   const playerIdToPlayerMap = useMemo(() => new Map(players.map(player => [player.id, player])), [players]);
 
   const [open, setOpen] = useState(false);
@@ -67,7 +68,7 @@ export const AddRoundModal = ({
 
   return (
     <>
-      <AddRoundModalTrigger onClick={() => setOpen(true)} />
+      <TriggerComponent onOpenModal={() => setOpen(true)} />
       <Dialog open={open} onClose={() => setOpen(false)} fullWidth>
         <DialogTitle>{t.addRound}</DialogTitle>
         <DialogContent>

@@ -43,6 +43,23 @@ export type Copies = Readonly<{
   };
   noData: string;
   chartPlaceholderText: string;
+  openTable: string;
+  landingPage: {
+    heading: string;
+    subheading: string;
+  };
+  openTablePage: {
+    scoringSettings: {
+      heading: string;
+    };
+    players: {
+      heading: string;
+    };
+    firstWuStep: {
+      heading: string;
+      subheading: string;
+    };
+  };
 }>;
 
 export const createCopies = (c: Copies) => c;

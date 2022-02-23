@@ -1,13 +1,53 @@
-import { createContext, ReactNode, useContext, useMemo, useState } from 'react';
-
-type Location = { path: string };
+import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from 'react';
+import { Location } from '../models/Location';
 
 const createLocationFromPath = (path: string) => ({ path });
+
+const pushState = (path: string) => window.history.pushState({}, document.title, path);
+
+const useRootRouterContext = (): [
+  currentLocation: Location,
+  navigate: (l: Location) => void,
+  navigateAbsolute: (l: Location) => void,
+] => {
+  const [path, setPath] = useState(location.pathname);
+  return [
+    useMemo(() => createLocationFromPath(path), [path]),
+    useCallback(({ path }: Location) => {
+      setPath(path);
+      pushState(path);
+    }, []),
+    useCallback(({ path }: Location) => {
+      setPath(path);
+      pushState(path);
+    }, []),
+  ];
+};
+
+const useParentRouterContext = (
+  rootPath: string,
+  parentContext: {
+    rootPath: string;
+    currentLocation: Location;
+    navigate: (l: Location) => void;
+    navigateAbsolute: (l: Location) => void;
+  },
+): [currentLocation: Location, navigate: (l: Location) => void, navigateAbsolute: (l: Location) => void] => {
+  return [
+    useMemo(
+      () => createLocationFromPath(parentContext.currentLocation.path.slice(rootPath.length)),
+      [parentContext.currentLocation.path, rootPath],
+    ),
+    useCallback(({ path }: Location) => parentContext.navigate({ path: `${rootPath}${path}` }), [rootPath]),
+    parentContext.navigateAbsolute,
+  ];
+};
 
 export const RouterContext = createContext<{
   rootPath: string;
   currentLocation: Location;
   navigate: (l: Location) => void;
+  navigateAbsolute: (l: Location) => void;
 } | null>(null);
 
 export const RouterContextProvider = ({
@@ -17,29 +57,14 @@ export const RouterContextProvider = ({
   rootPath?: string;
   children?: ReactNode;
 } = {}) => {
-  const [currentLocation, navigate] = (() => {
-    const parentContext = useContext(RouterContext);
-    if (parentContext) {
-      const { currentLocation, navigate } = parentContext;
-      return [
-        useMemo(
-          () => createLocationFromPath(currentLocation.path.slice(rootPath.length)),
-          [currentLocation.path, rootPath],
-        ),
-        ({ path }: Location) => navigate({ path: `${rootPath}${path}` }),
-      ];
-    }
+  const parentContext = useContext(RouterContext);
+  const [currentLocation, navigate, navigateAbsolute] = parentContext
+    ? useParentRouterContext(rootPath, parentContext)
+    : useRootRouterContext();
 
-    const [path, setPath] = useState(location.pathname);
-    return [
-      useMemo(() => createLocationFromPath(path), [path]),
-      ({ path }: Location) => {
-        const absolutePath = `${rootPath}${path}`;
-        setPath(path);
-        window.history.pushState({}, document.title, absolutePath);
-      },
-    ];
-  })();
-
-  return <RouterContext.Provider value={{ rootPath, currentLocation, navigate }}>{children}</RouterContext.Provider>;
+  return (
+    <RouterContext.Provider value={{ rootPath, currentLocation, navigate, navigateAbsolute }}>
+      {children}
+    </RouterContext.Provider>
+  );
 };

@@ -1,12 +1,12 @@
 import { Checkbox, FormControlLabel } from '@mui/material';
 import { useContext, useEffect } from 'react';
-import { useLocale } from '../../../../locales/hooks/useLocale';
+import { useT } from '../../../../locales/hooks/useT';
 import { AddRoundModalContext } from '../AddRoundModal';
 import { FarnSlider } from '../components/FarnSlider';
 import { WinnerButtonGroup } from '../components/WinnerButtonGroup';
 
 export const WinnerStep = () => {
-  const { t } = useLocale();
+  const t = useT();
   const {
     selectedPlayers, //
     winnerId,

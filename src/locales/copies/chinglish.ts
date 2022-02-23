@@ -45,4 +45,21 @@ export default createCopies({
   },
   noData: 'No data to show yet...',
   chartPlaceholderText: 'Add a guk to see chart...',
+  openTable: 'Open table',
+  landingPage: {
+    heading: 'MJ Cal',
+    subheading: 'Brainless geh cal',
+  },
+  openTablePage: {
+    scoringSettings: {
+      heading: 'Dim da fart?',
+    },
+    players: {
+      heading: 'Players',
+    },
+    firstWuStep: {
+      heading: 'All set!',
+      subheading: 'Click the button below to add a wu',
+    },
+  },
 });

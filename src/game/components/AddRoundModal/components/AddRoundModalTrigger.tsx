@@ -1,9 +1,9 @@
 import { Fab, Icon, SpeedDialIcon, useMediaQuery, useTheme } from '@mui/material';
-import { useLocale } from '../../../../locales/hooks/useLocale';
+import { useT } from '../../../../locales/hooks/useT';
 
-export const AddRoundModalTrigger = (props: { onClick?: () => void }) => {
+export const AddRoundModalTrigger = ({ onOpenModal }: { onOpenModal?: () => void }) => {
   const theme = useTheme();
-  const { t } = useLocale();
+  const t = useT();
   const isFloating = useMediaQuery(theme.breakpoints.down('xl')).valueOf();
 
   return (
@@ -18,7 +18,7 @@ export const AddRoundModalTrigger = (props: { onClick?: () => void }) => {
             variant: 'extended',
             sx: { gap: 1, '&::after': { content: `"${t.addRound}"` } },
           })}
-      {...props}
+      onClick={onOpenModal}
     >
       <SpeedDialIcon icon={<Icon>ramen_dining</Icon>} />
     </Fab>

@@ -3,6 +3,7 @@ import { useLocale } from '../../locales/hooks/useLocale';
 
 export const LanguageSwitcher = () => {
   const { t, setLocale, locale } = useLocale();
+  console.log(locale);
   return {
     chinglish: () => (
       <Button color="inherit" onClick={() => setLocale('zh-hk')}>

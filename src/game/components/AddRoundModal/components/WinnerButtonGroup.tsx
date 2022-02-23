@@ -1,5 +1,5 @@
 import { FormLabel, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { useLocale } from '../../../../locales/hooks/useLocale';
+import { useT } from '../../../../locales/hooks/useT';
 import { Player } from '../../../../settings/models/Player';
 
 export const WinnerButtonGroup = ({
@@ -11,7 +11,7 @@ export const WinnerButtonGroup = ({
   winnerId: string | undefined;
   onWinnerIdChange: (p: string) => void;
 }) => {
-  const { t } = useLocale();
+  const t = useT();
   return (
     <Stack>
       <FormLabel>{t.winner}</FormLabel>

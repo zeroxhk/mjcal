@@ -1,6 +1,6 @@
 import { Box, Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material';
 import { useMemo } from 'react';
-import { useLocale } from '../../../../locales/hooks/useLocale';
+import { useT } from '../../../../locales/hooks/useT';
 import { Player } from '../../../../settings/models/Player';
 
 export const CurrentPlayersSelect = ({
@@ -14,7 +14,7 @@ export const CurrentPlayersSelect = ({
 }) => {
   const selectedPlayerIdSet = useMemo(() => new Set(selectedPlayerIds), [selectedPlayerIds]);
   const playerIdToPlayerMap = useMemo(() => new Map(allPlayers.map(player => [player.id, player])), [allPlayers]);
-  const { t } = useLocale();
+  const t = useT();
 
   return (
     <FormControl fullWidth sx={{ mt: 1 }}>

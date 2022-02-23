@@ -1,8 +1,8 @@
 import { Box, Slider, Stack, TextField } from '@mui/material';
-import { useLocale } from '../../../../locales/hooks/useLocale';
+import { useT } from '../../../../locales/hooks/useT';
 
 export const FarnSlider = ({ farn, onFarnChange }: { farn: number; onFarnChange: (farn: number) => void }) => {
-  const { t } = useLocale();
+  const t = useT();
   return (
     <Stack direction="row" spacing={2} alignItems="center" flexWrap="wrap">
       <TextField

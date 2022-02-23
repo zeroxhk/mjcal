@@ -1,5 +1,5 @@
 import { FormControl, FormLabel, Input, Paper, SxProps, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { useLocale } from '../../locales/hooks/useLocale';
+import { useT } from '../../locales/hooks/useT';
 import { ScoringSettings as Settings } from '../models/ScoringSettings';
 
 export const ScoringSettings = ({
@@ -11,7 +11,7 @@ export const ScoringSettings = ({
   onSetSettings: (s: Settings) => void;
   sx?: SxProps;
 }) => {
-  const { t } = useLocale();
+  const t = useT();
   return (
     <Paper sx={{ flexGrow: 1, display: 'flex', gap: 2, flexDirection: 'column', padding: 2, ...sx }}>
       <FormControl>

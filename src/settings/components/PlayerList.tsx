@@ -14,7 +14,7 @@ import {
   TextField,
 } from '@mui/material';
 import produce from 'immer';
-import { useLocale } from '../../locales/hooks/useLocale';
+import { useT } from '../../locales/hooks/useT';
 import { createPlayer, Player } from '../models/Player';
 
 export const PlayerList = ({
@@ -26,7 +26,7 @@ export const PlayerList = ({
   onSetPlayers: (ps: Player[]) => void;
   sx?: SxProps;
 }) => {
-  const { t } = useLocale();
+  const t = useT();
   return (
     <Paper sx={{ flexGrow: 1, display: 'flex', gap: 1, flexDirection: 'column', padding: 2, ...sx }}>
       <Box sx={{ marginBottom: 1 }}>

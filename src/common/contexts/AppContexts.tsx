@@ -5,43 +5,31 @@ import { LocaleContextProvider } from '../../locales/contexts/LocaleContext';
 import { RouterContextProvider } from '../../router/contexts/RouterContext';
 import { PlayersContextProvider } from '../../settings/contexts/PlayersContext';
 import { ScoringSettingsContextProvider } from '../../settings/contexts/ScoringSettingsContext';
-
-const Nest = ({
-  children,
-  components,
-}: {
-  children: ReactNode;
-  components: ((props: { children: ReactNode }) => JSX.Element)[];
-}): JSX.Element => components.reduceRight((acc, Provider) => <Provider>{acc}</Provider>, <>{children}</>);
+import { NestComponents } from '../components/NestComponents';
 
 export const AppContextsProvider = ({ children }: { children: ReactNode }) => {
   return (
-    <RouterContextProvider>
-      <ThemeProvider
-        theme={createTheme({
-          palette: {
-            mode: 'dark',
+    <LocaleContextProvider>
+      <RouterContextProvider>
+        <ThemeProvider
+          theme={createTheme({
+            palette: {
+              mode: 'dark',
 
-            secondary: {
-              main: '#b7b7b7',
-              dark: '#5e5e5e',
-              contrastText: '#000',
+              secondary: {
+                main: '#b7b7b7',
+                dark: '#5e5e5e',
+                contrastText: '#000',
+              },
             },
-          },
-        })}
-      >
-        <CssBaseline />
-        <Nest
-          components={[
-            LocaleContextProvider,
-            PlayersContextProvider,
-            GameContextProvider,
-            ScoringSettingsContextProvider,
-          ]}
+          })}
         >
-          {children}
-        </Nest>
-      </ThemeProvider>
-    </RouterContextProvider>
+          <CssBaseline />
+          <NestComponents components={[PlayersContextProvider, GameContextProvider, ScoringSettingsContextProvider]}>
+            {children}
+          </NestComponents>
+        </ThemeProvider>
+      </RouterContextProvider>
+    </LocaleContextProvider>
   );
 };
