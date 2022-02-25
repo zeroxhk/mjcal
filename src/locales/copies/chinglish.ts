@@ -62,4 +62,5 @@ export default createCopies({
       subheading: 'Click the button below to add a wu',
     },
   },
+  beforeUnloadMessage: 'Are you sure you want to leave? You may lose your game progress.',
 });

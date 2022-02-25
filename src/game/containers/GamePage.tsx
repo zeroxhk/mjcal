@@ -1,14 +1,22 @@
 import { Container, Icon } from '@mui/material';
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import { ChartPage } from '../../chart/containers/ChartPage';
-import { AddRoundModalContainer } from '../../game/containers/AddRoundModalContainer';
+import { BottomMenuViewSwitcher } from '../../common/components/BottomMenuViewSwitcher';
+import { usePromptBeforeUnload } from '../../common/hooks/usePromptBeforeUnload';
 import { useT } from '../../locales/hooks/useT';
 import { SettingsPage } from '../../settings/containers/SettingsPage';
 import { TablePage } from '../../table/containers/TablePage';
-import { BottomMenuViewSwitcher } from '../components/BottomMenuViewSwitcher';
+import { GameContext } from '../contexts/GameContext';
+import { AddRoundModalContainer } from './AddRoundModalContainer';
 
 export const GamePage = () => {
   const t = useT();
+  const { rounds } = useContext(GameContext);
+
+  usePromptBeforeUnload(t.beforeUnloadMessage, {
+    active: useMemo(() => rounds.length > 0, [rounds.length]),
+  });
+
   return (
     <BottomMenuViewSwitcher
       PreView={({ viewId }) => (

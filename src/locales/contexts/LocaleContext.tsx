@@ -19,7 +19,6 @@ export const LocaleContextProvider = ({ children }: { children: ReactNode }) => 
   const [copies, setCopies] = useState<Copies>(ZH_HK);
 
   useEffect(() => {
-    console.log(localeKey);
     (async () => {
       setCopies((await getCopies[localeKey]()).default);
     })();

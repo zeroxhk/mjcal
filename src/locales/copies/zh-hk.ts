@@ -62,4 +62,5 @@ export default createCopies({
       subheading: '㩒下面個掣食糊！',
     },
   },
+  beforeUnloadMessage: '真係要走？走咗就冇哂啲記錄嫁啦！',
 });

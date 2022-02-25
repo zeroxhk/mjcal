@@ -60,6 +60,7 @@ export type Copies = Readonly<{
       subheading: string;
     };
   };
+  beforeUnloadMessage: string;
 }>;
 
 export const createCopies = (c: Copies) => c;
