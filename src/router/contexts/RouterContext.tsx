@@ -5,27 +5,30 @@ import { Location } from '../models/Location';
 const createLocationFromPath = (path: string) => ({ path });
 
 const pushState = (path: string) => window.history.pushState({}, document.title, path);
+const replaceState = (path: string) => window.history.replaceState({}, document.title, path);
 
 const useRootRouterContext = (): [
   currentLocation: Location,
   navigate: (l: Location) => void,
   navigateAbsolute: (l: Location) => void,
+  replace: (l: Location) => void,
+  replaceAbsolute: (l: Location) => void,
 ] => {
   const [path, setPath] = useState(location.pathname);
 
   useEventListener('popstate', () => setPath(location.pathname));
 
-  return [
-    useMemo(() => createLocationFromPath(path), [path]),
-    useCallback(({ path }: Location) => {
-      setPath(path);
-      pushState(path);
-    }, []),
-    useCallback(({ path }: Location) => {
-      setPath(path);
-      pushState(path);
-    }, []),
-  ];
+  const push = useCallback(({ path }: Location) => {
+    setPath(path);
+    pushState(path);
+  }, []);
+
+  const replace = useCallback(({ path }: Location) => {
+    setPath(path);
+    replaceState(path);
+  }, []);
+
+  return [useMemo(() => createLocationFromPath(path), [path]), push, push, replace, replace];
 };
 
 const useParentRouterContext = (
@@ -35,8 +38,16 @@ const useParentRouterContext = (
     currentLocation: Location;
     navigate: (l: Location) => void;
     navigateAbsolute: (l: Location) => void;
+    replace: (l: Location) => void;
+    replaceAbsolute: (l: Location) => void;
   },
-): [currentLocation: Location, navigate: (l: Location) => void, navigateAbsolute: (l: Location) => void] => {
+): [
+  currentLocation: Location,
+  navigate: (l: Location) => void,
+  navigateAbsolute: (l: Location) => void,
+  replace: (l: Location) => void,
+  replaceAbsolute: (l: Location) => void,
+] => {
   return [
     useMemo(
       () => createLocationFromPath(parentContext.currentLocation.path.slice(rootPath.length)),
@@ -44,6 +55,8 @@ const useParentRouterContext = (
     ),
     useCallback(({ path }: Location) => parentContext.navigate({ path: `${rootPath}${path}` }), [rootPath]),
     parentContext.navigateAbsolute,
+    useCallback(({ path }: Location) => parentContext.replace({ path: `${rootPath}${path}` }), [rootPath]),
+    parentContext.replaceAbsolute,
   ];
 };
 
@@ -52,6 +65,8 @@ export const RouterContext = createContext<{
   currentLocation: Location;
   navigate: (l: Location) => void;
   navigateAbsolute: (l: Location) => void;
+  replace: (l: Location) => void;
+  replaceAbsolute: (l: Location) => void;
 } | null>(null);
 
 export const RouterContextProvider = ({
@@ -62,12 +77,12 @@ export const RouterContextProvider = ({
   children?: ReactNode;
 } = {}) => {
   const parentContext = useContext(RouterContext);
-  const [currentLocation, navigate, navigateAbsolute] = parentContext
+  const [currentLocation, navigate, navigateAbsolute, replace, replaceAbsolute] = parentContext
     ? useParentRouterContext(rootPath, parentContext)
     : useRootRouterContext();
 
   return (
-    <RouterContext.Provider value={{ rootPath, currentLocation, navigate, navigateAbsolute }}>
+    <RouterContext.Provider value={{ rootPath, currentLocation, navigate, navigateAbsolute, replace, replaceAbsolute }}>
       {children}
     </RouterContext.Provider>
   );

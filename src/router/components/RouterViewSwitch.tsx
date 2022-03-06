@@ -20,7 +20,7 @@ export const createRoute = <P extends string>(
 ) => r;
 
 export const RouterViewSwitch = <V extends readonly Route[]>({ views }: { views: V }) => {
-  const { currentLocation, navigate } = useRouterContext();
+  const { currentLocation, replace } = useRouterContext();
 
   const currentPath = currentLocation.path;
   const view = views.find(({ path }) => matchRoute(path, currentPath));
@@ -28,7 +28,7 @@ export const RouterViewSwitch = <V extends readonly Route[]>({ views }: { views:
 
   if ('redirect' in view) {
     useEffect(() => {
-      navigate({ path: view.redirect });
+      replace({ path: view.redirect });
     }, []);
     return null;
   }
