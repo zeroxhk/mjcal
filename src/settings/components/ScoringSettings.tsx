@@ -36,7 +36,7 @@ export const ScoringSettings = ({
           fullWidth
         >
           <ToggleButton value="25chicken">{t.chipValues.c25chicken}</ToggleButton>
-          <ToggleButton value="51">{t.chipValues.c25chicken}</ToggleButton>
+          <ToggleButton value="51">{t.chipValues.c51}</ToggleButton>
           <ToggleButton value="12mosquitoes">{t.chipValues.c12mosquitoes}</ToggleButton>
         </ToggleButtonGroup>
       </FormControl>
