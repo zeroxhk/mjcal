@@ -1,10 +1,15 @@
 import { useTheme } from '@mui/material';
 import { ResponsiveLine } from '@nivo/line';
+import { useMemo } from 'react';
 import { useT } from '../../locales/hooks/useT';
 
 export const Chart = ({ data }: { data: { playerName: string; scores: (number | null)[] }[] }) => {
   const theme = useTheme();
   const t = useT();
+  const yScaleMax = useMemo(
+    () => Math.max(...data.flatMap(({ scores }) => scores).map(s => Math.abs(s ?? 0))),
+    data.flatMap(({ scores }) => scores),
+  );
 
   return (
     <ResponsiveLine
@@ -35,8 +40,8 @@ export const Chart = ({ data }: { data: { playerName: string; scores: (number | 
       margin={{ top: 20, right: 20, bottom: 85, left: 60 }}
       yScale={{
         type: 'linear',
-        min: -Math.max(...data.flatMap(({ scores }) => scores).map(s => Math.abs(s ?? 0))),
-        max: Math.max(...data.flatMap(({ scores }) => scores).map(s => Math.abs(s ?? 0))),
+        min: -yScaleMax,
+        max: yScaleMax,
       }}
       colors={{ scheme: 'set3' }}
       gridXValues={data[0]?.scores.length ?? 0}
