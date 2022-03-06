@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffectOnce } from 'usehooks-ts';
 import { RouterContextProvider } from '../contexts/RouterContext';
 import { getRouteParams, matchRoute } from '../helpers/routes';
 import { useRouterContext } from '../hooks/useRouterContext';
@@ -27,9 +27,7 @@ export const RouterViewSwitch = <V extends readonly Route[]>({ views }: { views:
   if (!view) return null;
 
   if ('redirect' in view) {
-    useEffect(() => {
-      replace({ path: view.redirect });
-    }, []);
+    useEffectOnce(() => replace({ path: view.redirect }));
     return null;
   }
 
