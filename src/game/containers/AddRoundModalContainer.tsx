@@ -11,5 +11,5 @@ export const AddRoundModalContainer = ({
 }) => {
   const { players } = useContext(PlayersContext);
   const { addRound } = useContext(GameContext);
-  return <AddRoundModal players={players} onAddRound={addRound} TriggerComponent={TriggerComponent} />;
+  return <AddRoundModal key={0} players={players} onAddRound={addRound} TriggerComponent={TriggerComponent} />;
 };
