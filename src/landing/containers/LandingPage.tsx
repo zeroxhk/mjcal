@@ -58,7 +58,7 @@ export const LandingPage = () => {
           <Typography variant="h5" component="h2" textAlign="center" sx={{ mb: 3 }}>
             {t.landingPage.subheading}
           </Typography>
-          <ScrollableChart data={useRandomChartData()} isShowScrollButton={false} />
+          <ScrollableChart data={useRandomChartData()} />
           <Button variant="contained" size="large" sx={{ mt: 5 }} onClick={() => navigate({ path: '/open-table' })}>
             {t.openTable}
             <Icon sx={{ ml: 1 }}>table_bar</Icon>

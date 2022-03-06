@@ -3,6 +3,7 @@ import { LandingPage } from '../../landing/containers/LandingPage';
 import { OpenTablePage } from '../../open-table/containers/OpenTablePage';
 import { createRoute, RouterViewSwitch } from '../../router/components/RouterViewSwitch';
 import { Header } from '../components/Header';
+import '../styles/scrollbars.css';
 
 export const App = () => {
   return (

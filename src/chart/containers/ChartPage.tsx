@@ -1,4 +1,4 @@
-import { Box, Container, Theme, useMediaQuery } from '@mui/material';
+import { Box, Container } from '@mui/material';
 import { scan, transpose } from 'ramda';
 import { useContext } from 'react';
 import { GameContext } from '../../game/contexts/GameContext';
@@ -36,7 +36,6 @@ export const ChartPage = () => {
           data={scoress
             .map(scores => scan((acc, score) => acc + (score ?? 0), 0, scores))
             .map((scores, i) => ({ playerName: players[i]?.name ?? '## NO PLAYER FOUND ##', scores }))}
-          isShowScrollButton={useMediaQuery<Theme>(({ breakpoints }) => breakpoints.up('xl')).valueOf()}
         />
       )}
     </Container>

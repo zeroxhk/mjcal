@@ -18,7 +18,6 @@ export const AppContextsProvider = ({ children }: { children: ReactNode }) => {
 
               secondary: {
                 main: '#b7b7b7',
-                dark: '#5e5e5e',
                 contrastText: '#000',
               },
             },

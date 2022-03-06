@@ -1,7 +1,6 @@
 import produce from 'immer';
-import { createContext, ReactNode, useContext, useState } from 'react';
-import { PlayersContext } from '../../settings/contexts/PlayersContext';
-import { createRandomRound, createRound, Round, RoundWithoutId } from '../models/Round';
+import { createContext, ReactNode, useState } from 'react';
+import { createRound, Round, RoundWithoutId } from '../models/Round';
 
 export const GameContext = createContext<{
   rounds: Round[];
@@ -14,10 +13,7 @@ export const GameContext = createContext<{
 });
 
 export const GameContextProvider = ({ children }: { children: ReactNode }) => {
-  const { players } = useContext(PlayersContext);
-  const [rounds, setRounds] = useState<Round[]>(
-    Array.from({ length: 60 }, () => createRandomRound({ playerIds: players.map(({ id }) => id) })),
-  );
+  const [rounds, setRounds] = useState<Round[]>([]);
 
   return (
     <GameContext.Provider
