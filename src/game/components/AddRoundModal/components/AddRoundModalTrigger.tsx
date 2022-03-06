@@ -12,7 +12,7 @@ export const AddRoundModalTrigger = ({ onOpenModal }: { onOpenModal?: () => void
       {...(isFloating
         ? {
             variant: 'circular',
-            sx: { position: 'fixed', bottom: theme.spacing(10), right: theme.spacing(3), zIndex: 1 },
+            sx: { position: 'fixed', bottom: theme.spacing(10), right: theme.spacing(3), zIndex: 10 },
           }
         : {
             variant: 'extended',

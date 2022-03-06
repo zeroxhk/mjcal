@@ -12,7 +12,7 @@ export const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <Box sx={{ flexGrow: 1, marginBottom: 10 }}>
+    <Box sx={{ flexGrow: 1, marginBottom: 10, zIndex: 999 }}>
       <AppBar position="fixed">
         <Toolbar>
           <Container maxWidth="xl" sx={{ display: 'flex' }}>

@@ -21,8 +21,8 @@ export const ScrollableChart = ({
         <Box
           sx={{
             minWidth: `${WIDTH_PER_ROUND * (data[0]?.scores.length ?? 1)}px`,
-            height: '700px',
-            maxHeight: 'calc(80vh - 200px)',
+            minHeight: '600px',
+            height: 'calc(80vh - 200px)',
             display: 'flex',
             alignItem: 'center',
           }}

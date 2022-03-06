@@ -19,7 +19,7 @@ export const TablePage = () => {
   );
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" sx={{ pb: 8 }}>
       <Paper sx={{ width: '100%', overflow: 'hidden' }}>
         <TableContainer sx={{ maxHeight: '65vh' }}>
           <Table stickyHeader aria-label="sticky table">
