@@ -44,9 +44,6 @@ export const AddRoundModal = ({
   const [canNext, setCanNext] = useState(false);
 
   const [selectedPlayerIds, setSelectedPlayerIds] = useState<string[]>(players.slice(0, 4).map(({ id }) => id));
-  useEffect(() => {
-    console.log(selectedPlayerIds);
-  }, []);
   const [farn, setFarn] = useState(3);
   const [winnerId, setWinnerId] = useState<string>();
   const [loserIds, setLoserIds] = useState<string[]>([]);
