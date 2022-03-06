@@ -48,7 +48,7 @@ export default createCopies({
   openTable: '開檯',
   landingPage: {
     heading: '麻雀計分器',
-    subheading: '唔洗用腦的器',
+    subheading: '唔洗用腦既器',
   },
   openTablePage: {
     scoringSettings: {
