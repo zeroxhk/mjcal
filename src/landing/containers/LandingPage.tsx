@@ -32,12 +32,10 @@ const useRandomChartData = () => {
 
   useEffect(
     () =>
-      interval(
-        () => {
-          setChartData(createRandomChartData(names));
-        },
-        { wait: 5000, immediate: true },
-      ),
+      interval(() => setChartData(createRandomChartData(names)), {
+        wait: 5000,
+        immediate: true,
+      }),
     [names],
   );
 

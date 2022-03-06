@@ -6,10 +6,7 @@ import { useT } from '../../locales/hooks/useT';
 export const Chart = ({ data }: { data: { playerName: string; scores: (number | null)[] }[] }) => {
   const theme = useTheme();
   const t = useT();
-  const yScaleMax = useMemo(
-    () => Math.max(...data.flatMap(({ scores }) => scores).map(s => Math.abs(s ?? 0))),
-    data.flatMap(({ scores }) => scores),
-  );
+  const yScaleMax = useMemo(() => Math.max(...data.flatMap(({ scores }) => scores).map(s => Math.abs(s ?? 0))), [data]);
 
   return (
     <ResponsiveLine

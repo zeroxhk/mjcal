@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useCallback, useContext, useMemo, useState } from 'react';
+import { useEventListener } from 'usehooks-ts';
 import { Location } from '../models/Location';
 
 const createLocationFromPath = (path: string) => ({ path });
@@ -11,6 +12,9 @@ const useRootRouterContext = (): [
   navigateAbsolute: (l: Location) => void,
 ] => {
   const [path, setPath] = useState(location.pathname);
+
+  useEventListener('popstate', () => setPath(location.pathname));
+
   return [
     useMemo(() => createLocationFromPath(path), [path]),
     useCallback(({ path }: Location) => {
