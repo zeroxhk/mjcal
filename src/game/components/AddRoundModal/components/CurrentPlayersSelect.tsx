@@ -1,7 +1,17 @@
-import { Box, Chip, FormControl, InputLabel, MenuItem, OutlinedInput, Select } from '@mui/material';
-import { useMemo } from 'react';
+import {
+  Checkbox,
+  FormControl,
+  FormLabel,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from '@mui/material';
+import { useCallback, useMemo } from 'react';
 import { useT } from '../../../../locales/hooks/useT';
 import { Player } from '../../../../settings/models/Player';
+import { toggleListItem } from '../../../helpers/arrays/toggleListItem';
 
 export const CurrentPlayersSelect = ({
   allPlayers,
@@ -13,41 +23,37 @@ export const CurrentPlayersSelect = ({
   onSelectedPlayerIdsChange: (s: string[]) => void;
 }) => {
   const selectedPlayerIdSet = useMemo(() => new Set(selectedPlayerIds), [selectedPlayerIds]);
-  const playerIdToPlayerMap = useMemo(() => new Map(allPlayers.map(player => [player.id, player])), [allPlayers]);
   const t = useT();
 
   return (
     <FormControl fullWidth sx={{ mt: 1 }}>
-      <InputLabel>{t.players}</InputLabel>
-      <Select
-        multiple
-        value={selectedPlayerIds}
-        onChange={event => {
-          const newIds = typeof event.target.value === 'string' ? event.target.value.split(',') : event.target.value;
-          if (newIds.length > 4) return;
-          onSelectedPlayerIdsChange(newIds);
-        }}
-        input={<OutlinedInput label={t.player} />}
-        renderValue={selectedPlayerIds => (
-          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
-            {selectedPlayerIds.map(id => (
-              <Chip key={id} label={playerIdToPlayerMap.get(id)?.name || 'error: cannot find player'} />
-            ))}
-          </Box>
-        )}
-      >
-        {allPlayers.map(({ id, name }) => (
-          <MenuItem
-            key={id}
-            value={id}
-            sx={({ typography }) => ({
-              fontWeight: selectedPlayerIdSet.has(id) ? typography.fontWeightMedium : typography.fontWeightRegular,
-            })}
-          >
-            {name}
-          </MenuItem>
-        ))}
-      </Select>
+      <FormLabel focused={false}>{t.players}</FormLabel>
+      <List>
+        {allPlayers.map(player => {
+          const isDisabled = useMemo(
+            () => !selectedPlayerIdSet.has(player.id) && selectedPlayerIds.length >= 4,
+            [selectedPlayerIdSet, selectedPlayerIds.length],
+          );
+          return (
+            <ListItem
+              key={player.id}
+              disablePadding
+              disabled={isDisabled}
+              onClick={useCallback(() => {
+                if (isDisabled) return;
+                onSelectedPlayerIdsChange(toggleListItem(player.id, selectedPlayerIds));
+              }, [player.id, selectedPlayerIds])}
+            >
+              <ListItemButton role={undefined} dense>
+                <ListItemIcon>
+                  <Checkbox edge="start" checked={selectedPlayerIdSet.has(player.id)} tabIndex={-1} disableRipple />
+                </ListItemIcon>
+                <ListItemText primary={player.name} />
+              </ListItemButton>
+            </ListItem>
+          );
+        })}
+      </List>
     </FormControl>
   );
 };
