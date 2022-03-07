@@ -20,7 +20,6 @@ export type Copies = Readonly<{
   losers: string;
   farn: string;
   player: string;
-  players: string;
   selfTouch: string;
   isSelfTouch: string;
   isBao: string;
@@ -61,6 +60,9 @@ export type Copies = Readonly<{
     };
   };
   beforeUnloadMessage: string;
+  addRoundModal: {
+    currentPlayersSelectTitle: string;
+  };
 }>;
 
 export const createCopies = (c: Copies) => c;

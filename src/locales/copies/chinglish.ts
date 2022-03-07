@@ -22,7 +22,6 @@ export default createCopies({
   losers: 'Out-chungers',
   farn: 'farn',
   player: 'Player',
-  players: 'Players',
   selfTouch: 'self-touch',
   isSelfTouch: 'Is self-touch?',
   isBao: 'Is bao?',
@@ -63,4 +62,7 @@ export default createCopies({
     },
   },
   beforeUnloadMessage: 'Are you sure you want to leave? You may lose your game progress.',
+  addRoundModal: {
+    currentPlayersSelectTitle: 'Current players',
+  },
 });

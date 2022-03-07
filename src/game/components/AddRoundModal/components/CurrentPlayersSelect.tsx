@@ -27,7 +27,7 @@ export const CurrentPlayersSelect = ({
 
   return (
     <FormControl fullWidth sx={{ mt: 1 }}>
-      <FormLabel focused={false}>{t.players}</FormLabel>
+      <FormLabel focused={false}>{t.addRoundModal.currentPlayersSelectTitle}</FormLabel>
       <List>
         {allPlayers.map(player => {
           const isDisabled = useMemo(

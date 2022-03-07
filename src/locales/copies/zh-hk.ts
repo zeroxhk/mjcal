@@ -18,11 +18,10 @@ export default createCopies({
   back: '返回',
   cancel: '取消',
   done: '搞掂',
-  winner: '食者',
+  winner: '食家',
   losers: '出銃者',
   farn: '番',
   player: '玩家',
-  players: '玩家們',
   selfTouch: '自摸',
   isSelfTouch: '自摸？',
   isBao: '包？',
@@ -63,4 +62,7 @@ export default createCopies({
     },
   },
   beforeUnloadMessage: '真係要走？走咗就冇哂啲記錄嫁啦！',
+  addRoundModal: {
+    currentPlayersSelectTitle: '邊個玩緊？',
+  },
 });
