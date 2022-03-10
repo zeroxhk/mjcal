@@ -6,14 +6,19 @@ import { useT } from '../../locales/hooks/useT';
 export const Chart = ({ data }: { data: { playerName: string; scores: (number | null)[] }[] }) => {
   const theme = useTheme();
   const t = useT();
-  const yScaleMax = useMemo(() => Math.max(...data.flatMap(({ scores }) => scores).map(s => Math.abs(s ?? 0))), [data]);
 
   return (
     <ResponsiveLine
-      data={data.map(({ playerName, scores }) => ({
-        id: playerName,
-        data: scores.map((score, i) => ({ x: i, y: score })),
-      }))}
+      data={useMemo(
+        () =>
+          data
+            .map(({ playerName, scores }) => ({
+              id: playerName,
+              data: scores.map((score, i) => ({ x: i, y: score })),
+            }))
+            .reverse(),
+        [data],
+      )}
       pointLabelYOffset={-12}
       enableSlices="x"
       theme={{
@@ -35,11 +40,18 @@ export const Chart = ({ data }: { data: { playerName: string; scores: (number | 
         },
       }}
       margin={{ top: 20, right: 20, bottom: 85, left: 60 }}
-      yScale={{
-        type: 'linear',
-        min: -yScaleMax,
-        max: yScaleMax,
-      }}
+      yScale={(() => {
+        const yScaleMax = useMemo(
+          () => Math.max(...data.flatMap(({ scores }) => scores).map(s => Math.abs(s ?? 0))),
+          [data],
+        );
+
+        return {
+          type: 'linear',
+          min: -yScaleMax,
+          max: yScaleMax,
+        };
+      })()}
       colors={{ scheme: 'set3' }}
       gridXValues={data[0]?.scores.length ?? 0}
       axisBottom={{
