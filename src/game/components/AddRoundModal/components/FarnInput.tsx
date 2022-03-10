@@ -11,12 +11,27 @@ export const FarnInput = ({
   const t = useT();
   return (
     <Stack direction="row">
-      <IconButton onClick={() => onFarnChange(farn - 1)}>
-        <Icon>remove</Icon>
-      </IconButton>
       <TextField
-        sx={{ width: theme => theme.spacing(8) }}
-        inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+        InputProps={{
+          startAdornment: (
+            <IconButton onClick={() => onFarnChange(farn - 1)}>
+              <Icon>remove</Icon>
+            </IconButton>
+          ),
+          endAdornment: (
+            <IconButton onClick={() => onFarnChange(farn + 1)}>
+              <Icon>add</Icon>
+            </IconButton>
+          ),
+        }}
+        sx={{ width: theme => theme.spacing(18) }}
+        inputProps={{
+          inputMode: 'numeric',
+          pattern: '[0-9]*',
+          style: {
+            textAlign: 'center',
+          },
+        }}
         value={farn}
         label={t.farn}
         onChange={event => {
@@ -25,9 +40,6 @@ export const FarnInput = ({
           onFarnChange(newFarn);
         }}
       />
-      <IconButton onClick={() => onFarnChange(farn + 1)}>
-        <Icon>add</Icon>
-      </IconButton>
     </Stack>
   );
 };
