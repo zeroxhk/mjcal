@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, FormGroup } from '@mui/material';
+import { Checkbox, FormControlLabel, FormGroup, Stack } from '@mui/material';
 import { useContext, useEffect, useMemo } from 'react';
 import { useT } from '../../../../locales/hooks/useT';
 import { AddRoundModalContext } from '../AddRoundModal';
@@ -23,26 +23,29 @@ export const LosersStep = () => {
   );
 
   useEffect(() => setIsBao(isSelfTouch && isBao), [isSelfTouch, isBao]);
-  useEffect(() => setLoserIds(isSelfTouch && !isBao ? potentialLosers.map(({ id }) => id) : []), [isSelfTouch, isBao]);
+  useEffect(
+    () => setLoserIds(isSelfTouch && !isBao ? potentialLosers.map(({ id }) => id) : []),
+    [isSelfTouch, isBao],
+  );
   useEffect(() => setCanNext(loserIds.length > 0), [loserIds]);
 
   return (
-    <>
-      {isSelfTouch && (
-        <FormGroup>
-          <FormControlLabel
-            control={<Checkbox checked={isBao} onChange={(_, bao) => setIsBao(bao)} />}
-            label={`${t.isBao} 🍞`}
-          />
-        </FormGroup>
-      )}
-
+    <Stack gap={2}>
       <LoserButtonGroup
         loserIds={loserIds}
         disabled={isSelfTouch && !isBao}
         onLoserIdsChange={setLoserIds}
         players={potentialLosers}
       />
-    </>
+
+      {isSelfTouch && (
+        <FormGroup sx={{ ml: 'auto' }}>
+          <FormControlLabel
+            control={<Checkbox checked={isBao} onChange={(_, bao) => setIsBao(bao)} />}
+            label={`${t.isBao} 🍞`}
+          />
+        </FormGroup>
+      )}
+    </Stack>
   );
 };

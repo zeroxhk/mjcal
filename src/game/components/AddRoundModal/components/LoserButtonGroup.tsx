@@ -23,6 +23,7 @@ export const LoserButtonGroup = ({
         onChange={(_, newLoser: string) => onLoserIdsChange([newLoser])}
         exclusive
         fullWidth
+        orientation="vertical"
         disabled={disabled}
       >
         {players.map(({ id, name }) => (

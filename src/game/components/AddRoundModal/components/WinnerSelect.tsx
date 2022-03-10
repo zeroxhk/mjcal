@@ -2,7 +2,7 @@ import { FormLabel, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material
 import { useT } from '../../../../locales/hooks/useT';
 import { Player } from '../../../../settings/models/Player';
 
-export const WinnerButtonGroup = ({
+export const WinnerSelect = ({
   players,
   winnerId,
   onWinnerIdChange,
@@ -16,6 +16,7 @@ export const WinnerButtonGroup = ({
     <Stack>
       <FormLabel>{t.winner}</FormLabel>
       <ToggleButtonGroup
+        orientation="vertical"
         color="primary"
         value={winnerId}
         exclusive
