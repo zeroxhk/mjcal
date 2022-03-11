@@ -1,10 +1,11 @@
-import { Fab, Icon, SpeedDialIcon, useMediaQuery, useTheme } from '@mui/material';
+import { Fab, Icon, SpeedDialIcon, useTheme } from '@mui/material';
+import { useBreakpoints } from '../../../../common/hooks/useBreakpoints';
 import { useT } from '../../../../locales/hooks/useT';
 
 export const AddRoundModalTrigger = ({ onOpenModal }: { onOpenModal?: () => void }) => {
   const theme = useTheme();
   const t = useT();
-  const isFloating = useMediaQuery(theme.breakpoints.down('xl')).valueOf();
+  const isFloating = useBreakpoints().isMobile;
 
   return (
     <Fab
@@ -12,7 +13,12 @@ export const AddRoundModalTrigger = ({ onOpenModal }: { onOpenModal?: () => void
       {...(isFloating
         ? {
             variant: 'circular',
-            sx: { position: 'fixed', bottom: theme.spacing(10), right: theme.spacing(3), zIndex: 10 },
+            sx: {
+              position: 'fixed',
+              bottom: theme.spacing(10),
+              right: theme.spacing(3),
+              zIndex: 10,
+            },
           }
         : {
             variant: 'extended',
