@@ -1,5 +1,7 @@
 import {
   Container,
+  Icon,
+  IconButton,
   Paper,
   Table,
   TableBody,
@@ -7,8 +9,9 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Theme,
 } from '@mui/material';
-import { sum, transpose } from 'ramda';
+import { sum, transpose, zip } from 'ramda';
 import { useContext, useMemo } from 'react';
 import { useT } from '../../locales/hooks/useT';
 import { PlayersContext } from '../../settings/contexts/PlayersContext';
@@ -19,13 +22,26 @@ import { getScoresForRound } from '../helpers/scoreHelpers';
 export const TablePage = () => {
   const t = useT();
   const { players } = useContext(PlayersContext);
-  const { rounds } = useContext(GameContext);
+  const { rounds, removeRound } = useContext(GameContext);
   const { settings: scoringSettings } = useContext(ScoringSettingsContext);
 
-  const scoress = useMemo(
-    () => rounds.map(round => getScoresForRound(round, { players, scoringSettings })),
-    [rounds, players, scoringSettings],
-  );
+  const [roundIdToScoresMap, playerIdToTotalScoreMap] = useMemo(() => {
+    const scoress = rounds.map(round => getScoresForRound(round, { players, scoringSettings }));
+    return [
+      new Map(
+        zip(
+          rounds.map(({ id }) => id),
+          scoress,
+        ),
+      ),
+      new Map(
+        zip(
+          players.map(({ id }) => id),
+          transpose(scoress).map(scores => sum(scores.map(n => n ?? 0))),
+        ),
+      ),
+    ] as const;
+  }, [rounds, players, scoringSettings]);
 
   return (
     <Container maxWidth="xl" sx={{ pb: 8 }}>
@@ -34,7 +50,8 @@ export const TablePage = () => {
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
               <TableRow sx={{ whiteSpace: 'nowrap' }}>
-                <TableCell>#</TableCell>
+                <TableCell padding="checkbox"></TableCell>
+                <TableCell padding="none">#</TableCell>
                 {players.map(player => (
                   <TableCell key={player.id}>{player.name}</TableCell>
                 ))}
@@ -43,27 +60,22 @@ export const TablePage = () => {
             <TableBody>
               {rounds.length <= 0 ? (
                 <TableRow>
-                  <TableCell colSpan={1 + players.length} align="center">
+                  <TableCell colSpan={2 + players.length} align="center">
                     {t.noData}
                   </TableCell>
                 </TableRow>
               ) : (
                 <>
-                  {scoress.map((scores, i) => (
+                  {rounds.map(({ id }, i) => (
                     <TableRow key={`round${i}`}>
-                      <TableCell>#{i + 1}</TableCell>
-                      {scores.map((score, i) => (
-                        <TableCell
-                          key={i}
-                          sx={
-                            !!score
-                              ? {
-                                  color: ({ palette }) =>
-                                    palette[score > 0 ? 'success' : 'error'].main,
-                                }
-                              : {}
-                          }
-                        >
+                      <TableCell size="small">
+                        <IconButton onClick={() => removeRound(id)}>
+                          <Icon fontSize="inherit">delete</Icon>
+                        </IconButton>
+                      </TableCell>
+                      <TableCell padding="none">#{i + 1}</TableCell>
+                      {roundIdToScoresMap.get(id)!.map((score, i) => (
+                        <TableCell key={i} sx={{ color: getScoreColor(score) }}>
                           {score ?? '-'}
                         </TableCell>
                       ))}
@@ -73,21 +85,12 @@ export const TablePage = () => {
                     sx={({ palette }) => ({ bgcolor: '#122b36', color: palette.info.contrastText })}
                     ref={el => el?.scrollIntoView()}
                   >
-                    <TableCell>Sum</TableCell>
-                    {transpose(scoress)
-                      .map(scores => sum(scores.map(n => n ?? 0)))
+                    <TableCell></TableCell>
+                    <TableCell padding="none">Sum</TableCell>
+                    {players
+                      .map(({ id }) => playerIdToTotalScoreMap.get(id)!)
                       .map((total, i) => (
-                        <TableCell
-                          key={i}
-                          sx={
-                            !!total
-                              ? {
-                                  color: ({ palette }) =>
-                                    palette[total > 0 ? 'success' : 'error'].main,
-                                }
-                              : {}
-                          }
-                        >
+                        <TableCell key={i} sx={{ color: getScoreColor(total) }}>
                           {total}
                         </TableCell>
                       ))}
@@ -100,4 +103,9 @@ export const TablePage = () => {
       </Paper>
     </Container>
   );
+};
+
+const getScoreColor = (score: number | null): (({ palette }: Theme) => string) | undefined => {
+  if (score === 0 || score === null) return undefined;
+  return ({ palette }) => palette[score > 0 ? 'success' : 'error'].main;
 };
