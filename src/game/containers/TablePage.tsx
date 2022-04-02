@@ -1,11 +1,20 @@
-import { Container, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import {
+  Container,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@mui/material';
 import { sum, transpose } from 'ramda';
 import { useContext, useMemo } from 'react';
-import { GameContext } from '../../game/contexts/GameContext';
-import { getScoresForRound } from '../../game/helpers/scoreHelpers';
 import { useT } from '../../locales/hooks/useT';
 import { PlayersContext } from '../../settings/contexts/PlayersContext';
 import { ScoringSettingsContext } from '../../settings/contexts/ScoringSettingsContext';
+import { GameContext } from '../contexts/GameContext';
+import { getScoresForRound } from '../helpers/scoreHelpers';
 
 export const TablePage = () => {
   const t = useT();
@@ -46,7 +55,14 @@ export const TablePage = () => {
                       {scores.map((score, i) => (
                         <TableCell
                           key={i}
-                          sx={!!score ? { color: ({ palette }) => palette[score > 0 ? 'success' : 'error'].main } : {}}
+                          sx={
+                            !!score
+                              ? {
+                                  color: ({ palette }) =>
+                                    palette[score > 0 ? 'success' : 'error'].main,
+                                }
+                              : {}
+                          }
                         >
                           {score ?? '-'}
                         </TableCell>
@@ -63,7 +79,14 @@ export const TablePage = () => {
                       .map((total, i) => (
                         <TableCell
                           key={i}
-                          sx={!!total ? { color: ({ palette }) => palette[total > 0 ? 'success' : 'error'].main } : {}}
+                          sx={
+                            !!total
+                              ? {
+                                  color: ({ palette }) =>
+                                    palette[total > 0 ? 'success' : 'error'].main,
+                                }
+                              : {}
+                          }
                         >
                           {total}
                         </TableCell>

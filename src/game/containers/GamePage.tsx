@@ -6,9 +6,9 @@ import { useT } from '../../locales/hooks/useT';
 import { RouterViewSwitch } from '../../router/components/RouterViewSwitch';
 import { useRouterContext } from '../../router/hooks/useRouterContext';
 import { SettingsPage } from '../../settings/containers/SettingsPage';
-import { TablePage } from '../../table/containers/TablePage';
 import { GameContext } from '../contexts/GameContext';
 import { AddRoundModalContainer } from './AddRoundModalContainer';
+import { TablePage } from './TablePage';
 
 const BottomMenu = <T extends string>({
   items,
@@ -47,7 +47,10 @@ const useBottomMenuRouterViewSwitch = <T extends string>(
     useCallback(
       () => (
         <BottomMenu
-          items={useMemo(() => views.map(({ path, label, icon }) => ({ id: path, label, icon })), [views])}
+          items={useMemo(
+            () => views.map(({ path, label, icon }) => ({ id: path, label, icon })),
+            [views],
+          )}
           selectedItemId={currentLocation.path}
           onSelectedItemIdChange={path => navigate({ path })}
         />
@@ -95,7 +98,10 @@ export const GamePage = () => {
 
   return (
     <Box sx={{ pb: 12 }}>
-      <Container maxWidth="xl" sx={{ mb: 2, display: currentLocation.path === '/settings' ? 'none' : undefined }}>
+      <Container
+        maxWidth="xl"
+        sx={{ mb: 2, display: currentLocation.path === '/settings' ? 'none' : undefined }}
+      >
         <AddRoundModalContainer />
       </Container>
 
