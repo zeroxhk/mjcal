@@ -65,4 +65,5 @@ export default createCopies({
   addRoundModal: {
     currentPlayersSelectTitle: '邊個玩緊？',
   },
+  removeRoundMessage: '真係刪除嗎？',
 });

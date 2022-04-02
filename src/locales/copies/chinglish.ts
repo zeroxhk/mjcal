@@ -65,4 +65,5 @@ export default createCopies({
   addRoundModal: {
     currentPlayersSelectTitle: 'Current players',
   },
+  removeRoundMessage: 'Are you sure you want to remove the round? You cannot undo this change.',
 });

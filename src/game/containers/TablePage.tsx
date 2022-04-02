@@ -69,7 +69,13 @@ export const TablePage = () => {
                   {rounds.map(({ id }, i) => (
                     <TableRow key={`round${i}`}>
                       <TableCell size="small">
-                        <IconButton onClick={() => removeRound(id)}>
+                        <IconButton
+                          onClick={() => {
+                            if (window.confirm(t.removeRoundMessage)) {
+                              removeRound(id);
+                            }
+                          }}
+                        >
                           <Icon fontSize="inherit">delete</Icon>
                         </IconButton>
                       </TableCell>

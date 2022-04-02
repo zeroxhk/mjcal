@@ -63,6 +63,7 @@ export type Copies = Readonly<{
   addRoundModal: {
     currentPlayersSelectTitle: string;
   };
+  removeRoundMessage: string;
 }>;
 
 export const createCopies = (c: Copies) => c;
