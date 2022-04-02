@@ -23,7 +23,10 @@ const createRandomChartData = (names: string[]): { playerName: string; scores: n
       return 0;
     });
   });
-  return zip(players, transpose(rounds)).map(([playerName, scores]) => ({ playerName, scores: scan(add, 0, scores) }));
+  return zip(players, transpose(rounds)).map(([playerName, scores]) => ({
+    playerName,
+    scores: scan(add, 0, scores),
+  }));
 };
 
 const useRandomChartData = () => {
@@ -57,7 +60,12 @@ export const LandingPage = () => {
             {t.landingPage.subheading}
           </Typography>
           <ScrollableChart data={useRandomChartData()} />
-          <Button variant="contained" size="large" sx={{ mt: 5 }} onClick={() => navigate({ path: '/open-table' })}>
+          <Button
+            variant="contained"
+            size="large"
+            sx={{ mt: 5 }}
+            onClick={() => navigate({ path: '/open-table' })}
+          >
             {t.openTable}
             <Icon sx={{ ml: 1 }}>table_bar</Icon>
           </Button>
