@@ -27,6 +27,16 @@ export const AddRoundModalContext = createContext({
   setCanNext: (_canNext: boolean) => {},
 });
 
+const DEFAULT_STATE = {
+  step: 0,
+  farn: 3,
+  winnerId: undefined,
+  loserIds: [] as string[],
+  isBao: false,
+  isSelfTouch: false,
+  canNext: false,
+} as const;
+
 export const AddRoundModal = ({
   players,
   onAddRound,
@@ -37,28 +47,33 @@ export const AddRoundModal = ({
   TriggerComponent: ({ onOpenModal }: { onOpenModal: () => void }) => JSX.Element;
 }) => {
   const t = useT();
-  const playerIdToPlayerMap = useMemo(() => new Map(players.map(player => [player.id, player])), [players]);
+  const playerIdToPlayerMap = useMemo(
+    () => new Map(players.map(player => [player.id, player])),
+    [players],
+  );
 
   const [open, setOpen] = useState(false);
-  const [step, setStep] = useState(0);
-  const [canNext, setCanNext] = useState(false);
+  const [selectedPlayerIds, setSelectedPlayerIds] = useState<string[]>(
+    players.slice(0, 4).map(({ id }) => id),
+  );
 
-  const [selectedPlayerIds, setSelectedPlayerIds] = useState<string[]>(players.slice(0, 4).map(({ id }) => id));
-  const [farn, setFarn] = useState(3);
-  const [winnerId, setWinnerId] = useState<string>();
-  const [loserIds, setLoserIds] = useState<string[]>([]);
-  const [isBao, setIsBao] = useState(false);
-  const [isSelfTouch, setIsSelfTouch] = useState(false);
+  const [step, setStep] = useState<number>(DEFAULT_STATE.step);
+  const [canNext, setCanNext] = useState<boolean>(DEFAULT_STATE.canNext);
+  const [farn, setFarn] = useState<number>(DEFAULT_STATE.farn);
+  const [winnerId, setWinnerId] = useState<string | undefined>(DEFAULT_STATE.winnerId);
+  const [loserIds, setLoserIds] = useState<string[]>(DEFAULT_STATE.loserIds);
+  const [isBao, setIsBao] = useState<boolean>(DEFAULT_STATE.isBao);
+  const [isSelfTouch, setIsSelfTouch] = useState<boolean>(DEFAULT_STATE.isSelfTouch);
 
   useEffect(() => {
     if (!open) return;
-    setStep(0);
-    setFarn(3);
-    setWinnerId(undefined);
-    setLoserIds([]);
-    setIsBao(false);
-    setIsSelfTouch(false);
-    setCanNext(false);
+    setStep(DEFAULT_STATE.step);
+    setFarn(DEFAULT_STATE.farn);
+    setWinnerId(DEFAULT_STATE.winnerId);
+    setLoserIds(DEFAULT_STATE.loserIds);
+    setIsBao(DEFAULT_STATE.isBao);
+    setIsSelfTouch(DEFAULT_STATE.isSelfTouch);
+    setCanNext(DEFAULT_STATE.canNext);
   }, [open]);
 
   const selectedPlayers = useMemo(
@@ -91,7 +106,9 @@ export const AddRoundModal = ({
               setCanNext,
             }}
           >
-            {[() => <CurrentPlayersSelectStep />, () => <WinnerStep />, () => <LosersStep />][step]?.()}
+            {[() => <CurrentPlayersSelectStep />, () => <WinnerStep />, () => <LosersStep />][
+              step
+            ]?.()}
           </AddRoundModalContext.Provider>
         </DialogContent>
         <DialogActions>

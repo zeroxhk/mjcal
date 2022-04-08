@@ -3,7 +3,8 @@ import { AddRoundModalContext } from '../AddRoundModal';
 import { CurrentPlayersSelect } from '../components/CurrentPlayersSelect';
 
 export const CurrentPlayersSelectStep = () => {
-  const { players, selectedPlayerIds, setSelectedPlayerIds, setCanNext } = useContext(AddRoundModalContext);
+  const { players, selectedPlayerIds, setSelectedPlayerIds, setCanNext } =
+    useContext(AddRoundModalContext);
 
   useEffect(() => setCanNext(selectedPlayerIds.length === 4), [selectedPlayerIds]);
 
