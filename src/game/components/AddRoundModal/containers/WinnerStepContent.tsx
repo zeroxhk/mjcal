@@ -1,28 +1,31 @@
 import { Checkbox, FormControlLabel, Stack } from '@mui/material';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { useT } from '../../../../locales/hooks/useT';
+import { PlayersContext } from '../../../../settings/contexts/PlayersContext';
 import { AddRoundModalContext } from '../AddRoundModal';
 import { FarnInput } from '../components/FarnInput';
 import { WinnerSelect } from '../components/WinnerSelect';
 
-export const WinnerStep = () => {
+export const WinnerStepContent = () => {
   const t = useT();
   const {
-    selectedPlayers, //
+    selectedPlayerIds, //
     winnerId,
     setWinnerId,
     farn,
     setFarn,
     isSelfTouch,
     setIsSelfTouch,
-    setCanNext,
   } = useContext(AddRoundModalContext);
-
-  useEffect(() => setCanNext(!!winnerId), [winnerId]);
+  const { getPlayerById } = useContext(PlayersContext);
 
   return (
     <Stack gap={2}>
-      <WinnerSelect players={selectedPlayers} winnerId={winnerId} onWinnerIdChange={setWinnerId} />
+      <WinnerSelect
+        players={selectedPlayerIds.map(getPlayerById)}
+        winnerId={winnerId}
+        onWinnerIdChange={setWinnerId}
+      />
       <Stack direction="row-reverse" justifyContent="flex-start" flexWrap="wrap" gap={2}>
         <FarnInput farn={farn} onFarnChange={setFarn} />
         <FormControlLabel

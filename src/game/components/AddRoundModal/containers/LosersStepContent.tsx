@@ -1,33 +1,34 @@
 import { Checkbox, FormControlLabel, FormGroup, Stack } from '@mui/material';
 import { useContext, useEffect, useMemo } from 'react';
 import { useT } from '../../../../locales/hooks/useT';
+import { PlayersContext } from '../../../../settings/contexts/PlayersContext';
 import { AddRoundModalContext } from '../AddRoundModal';
 import { LoserButtonGroup } from '../components/LoserButtonGroup';
 
-export const LosersStep = () => {
+export const LosersStepContent = () => {
   const t = useT();
   const {
-    selectedPlayers, //
+    selectedPlayerIds, //
     winnerId,
     loserIds,
     setLoserIds,
     isSelfTouch,
     isBao,
     setIsBao,
-    setCanNext,
   } = useContext(AddRoundModalContext);
 
-  const potentialLosers = useMemo(
-    () => selectedPlayers.filter(({ id }) => id !== winnerId),
-    [selectedPlayers, winnerId],
+  const { getPlayerById } = useContext(PlayersContext);
+
+  const potentialLoserIds = useMemo(
+    () => selectedPlayerIds.filter(id => id !== winnerId),
+    [selectedPlayerIds, winnerId],
   );
 
   useEffect(() => setIsBao(isSelfTouch && isBao), [isSelfTouch, isBao]);
   useEffect(
-    () => setLoserIds(isSelfTouch && !isBao ? potentialLosers.map(({ id }) => id) : []),
+    () => setLoserIds(isSelfTouch && !isBao ? potentialLoserIds : []),
     [isSelfTouch, isBao],
   );
-  useEffect(() => setCanNext(loserIds.length > 0), [loserIds]);
 
   return (
     <Stack gap={2}>
@@ -35,7 +36,7 @@ export const LosersStep = () => {
         loserIds={loserIds}
         disabled={isSelfTouch && !isBao}
         onLoserIdsChange={setLoserIds}
-        players={potentialLosers}
+        players={potentialLoserIds.map(getPlayerById)}
       />
 
       {isSelfTouch && (
