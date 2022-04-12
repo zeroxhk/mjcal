@@ -7,7 +7,7 @@ import { CurrentPlayersSelectStepContent } from './CurrentPlayerSelectStepConten
 
 export const CurrentPlayerSelectStep = () => {
   const t = useT();
-  const { selectedPlayerIds, next, close } = useContext(AddRoundModalContext);
+  const { draftRound, next, close } = useContext(AddRoundModalContext);
 
   return (
     <>
@@ -17,7 +17,7 @@ export const CurrentPlayerSelectStep = () => {
       </DialogContent>
       <Actions
         canBack={false}
-        canNext={selectedPlayerIds.length === 4}
+        canNext={draftRound.playerIds.length === 4}
         nextText={t.next}
         onClose={close}
         onNext={next}

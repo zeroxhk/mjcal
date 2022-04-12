@@ -7,32 +7,61 @@ import { WinnerStep } from './containers/WinnerStep';
 
 const STEP_COUNT = 3;
 
-export const AddRoundModalContext = createContext({
-  selectedPlayerIds: [] as string[],
-  setSelectedPlayerIds: (_ids: string[]) => {},
+export type DraftRound = Readonly<{
+  playerIds: readonly string[];
+  farn: number;
+  winnerId: undefined | string;
+  loserIds: readonly string[];
+  isBao: boolean;
+  isSelfTouch: boolean;
+}>;
+
+const DEFAULT_DRAFT_ROUND: DraftRound = {
+  playerIds: [],
   farn: 3,
-  setFarn: (_farn: number) => {},
-  winnerId: undefined as undefined | string,
-  setWinnerId: (_ids: undefined | string) => {},
-  loserIds: [] as string[],
-  setLoserIds: (_ids: string[]) => {},
+  winnerId: undefined,
+  loserIds: [],
   isBao: false,
-  setIsBao: (_bao: boolean) => {},
   isSelfTouch: false,
-  setIsSelfTouch: (_st: boolean) => {},
+};
+
+const DEFAULT_STEP = 0 as const;
+
+const useDraftRound = (
+  initial: DraftRound,
+): [
+  draftRound: DraftRound,
+  setDraftRound: (partialDraft: DraftRound) => void,
+  updateDraftRound: (partialDraft: Partial<DraftRound>) => void,
+] => {
+  const [draftRound, setDraftRound] = useState(initial);
+  return [
+    draftRound,
+    setDraftRound,
+    useCallback(
+      partialDraftRound =>
+        setDraftRound({
+          ...draftRound,
+          ...partialDraftRound,
+        }),
+      [draftRound],
+    ),
+  ];
+};
+
+export const AddRoundModalContext = createContext<{
+  draftRound: DraftRound;
+  updateDraftRound: (partialDraft: Partial<DraftRound>) => void;
+  next: () => void;
+  back: () => void;
+  close: () => void;
+}>({
+  draftRound: DEFAULT_DRAFT_ROUND,
+  updateDraftRound: () => {},
   next: () => {},
   back: () => {},
   close: () => {},
 });
-
-const DEFAULT_STATE = {
-  step: 0,
-  farn: 3,
-  winnerId: undefined,
-  loserIds: [] as string[],
-  isBao: false,
-  isSelfTouch: false,
-} as const;
 
 export const AddRoundModal = ({
   TriggerComponent,
@@ -42,25 +71,20 @@ export const AddRoundModal = ({
   const { players: allPlayers } = useContext(PlayersContext);
 
   const [open, setOpen] = useState(false);
-  const [selectedPlayerIds, setSelectedPlayerIds] = useState<string[]>(
-    allPlayers.slice(0, 4).map(({ id }) => id),
-  );
+  const [step, setStep] = useState<number>(DEFAULT_STEP);
 
-  const [step, setStep] = useState<number>(DEFAULT_STATE.step);
-  const [farn, setFarn] = useState<number>(DEFAULT_STATE.farn);
-  const [winnerId, setWinnerId] = useState<string | undefined>(DEFAULT_STATE.winnerId);
-  const [loserIds, setLoserIds] = useState<string[]>(DEFAULT_STATE.loserIds);
-  const [isBao, setIsBao] = useState<boolean>(DEFAULT_STATE.isBao);
-  const [isSelfTouch, setIsSelfTouch] = useState<boolean>(DEFAULT_STATE.isSelfTouch);
+  const [draftRound, setDraftRound, updateDraftRound] = useDraftRound({
+    ...DEFAULT_DRAFT_ROUND,
+    playerIds: allPlayers.slice(0, 4).map(({ id }) => id),
+  });
 
   useEffect(() => {
     if (!open) return;
-    setStep(DEFAULT_STATE.step);
-    setFarn(DEFAULT_STATE.farn);
-    setWinnerId(DEFAULT_STATE.winnerId);
-    setLoserIds(DEFAULT_STATE.loserIds);
-    setIsBao(DEFAULT_STATE.isBao);
-    setIsSelfTouch(DEFAULT_STATE.isSelfTouch);
+    setStep(DEFAULT_STEP);
+    setDraftRound({
+      ...DEFAULT_DRAFT_ROUND,
+      playerIds: draftRound.playerIds,
+    });
   }, [open]);
 
   return (
@@ -69,18 +93,8 @@ export const AddRoundModal = ({
       <Dialog open={open} onClose={() => setOpen(false)} fullWidth>
         <AddRoundModalContext.Provider
           value={{
-            selectedPlayerIds,
-            setSelectedPlayerIds,
-            farn,
-            setFarn,
-            winnerId,
-            setWinnerId,
-            loserIds,
-            setLoserIds,
-            isBao,
-            setIsBao,
-            isSelfTouch,
-            setIsSelfTouch,
+            draftRound,
+            updateDraftRound,
             next: useCallback(() => setStep(Math.min(step + 1, STEP_COUNT - 1)), [step]),
             back: useCallback(() => setStep(Math.max(step - 1, 0)), [step]),
             close: useCallback(() => setOpen(false), []),

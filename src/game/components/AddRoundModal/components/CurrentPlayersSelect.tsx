@@ -8,8 +8,8 @@ export const CurrentPlayersSelect = ({
   selectedPlayerIds,
   onSelectedPlayerIdsChange,
 }: {
-  allPlayers: Player[];
-  selectedPlayerIds: string[];
+  allPlayers: readonly Player[];
+  selectedPlayerIds: readonly string[];
   onSelectedPlayerIdsChange: (s: string[]) => void;
 }) => {
   const selectedPlayerIdSet = useMemo(() => new Set(selectedPlayerIds), [selectedPlayerIds]);

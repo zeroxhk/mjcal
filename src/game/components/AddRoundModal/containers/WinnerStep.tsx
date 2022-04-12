@@ -7,7 +7,7 @@ import { WinnerStepContent } from './WinnerStepContent';
 
 export const WinnerStep = () => {
   const t = useT();
-  const { winnerId, next, back, close } = useContext(AddRoundModalContext);
+  const { draftRound, next, back, close } = useContext(AddRoundModalContext);
 
   return (
     <>
@@ -17,7 +17,7 @@ export const WinnerStep = () => {
       </DialogContent>
       <Actions
         canBack
-        canNext={!!winnerId}
+        canNext={!!draftRound.winnerId}
         nextText={t.next}
         onNext={next}
         onBack={back}

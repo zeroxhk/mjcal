@@ -1,9 +1,8 @@
-import produce from 'immer';
 import { createContext, ReactNode, useState } from 'react';
 import { createRound, Round, RoundWithoutId } from '../models/Round';
 
 export const GameContext = createContext<{
-  rounds: Round[];
+  rounds: readonly Round[];
   addRound: (r: RoundWithoutId) => void;
   removeRound: (id: string) => void;
 }>({
@@ -19,12 +18,7 @@ export const GameContextProvider = ({ children }: { children: ReactNode }) => {
     <GameContext.Provider
       value={{
         rounds,
-        addRound: r =>
-          setRounds(
-            produce(rounds, draft => {
-              draft.push(createRound(r));
-            }),
-          ),
+        addRound: r => setRounds([...rounds, createRound(r)]),
         removeRound: id => setRounds(rounds.filter(round => round.id !== id)),
       }}
     >

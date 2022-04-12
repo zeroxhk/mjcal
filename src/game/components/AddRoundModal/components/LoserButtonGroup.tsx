@@ -8,8 +8,8 @@ export const LoserButtonGroup = ({
   onLoserIdsChange,
   disabled,
 }: {
-  players: Player[];
-  loserIds: string[];
+  players: readonly Player[];
+  loserIds: readonly string[];
   onLoserIdsChange: (loserIds: string[]) => void;
   disabled: boolean;
 }) => {

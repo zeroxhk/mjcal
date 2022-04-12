@@ -1,5 +1,5 @@
 import { Checkbox, FormControlLabel, Stack } from '@mui/material';
-import { useContext } from 'react';
+import { useCallback, useContext } from 'react';
 import { useT } from '../../../../locales/hooks/useT';
 import { PlayersContext } from '../../../../settings/contexts/PlayersContext';
 import { AddRoundModalContext } from '../AddRoundModal';
@@ -8,31 +8,32 @@ import { WinnerSelect } from '../components/WinnerSelect';
 
 export const WinnerStepContent = () => {
   const t = useT();
-  const {
-    selectedPlayerIds, //
-    winnerId,
-    setWinnerId,
-    farn,
-    setFarn,
-    isSelfTouch,
-    setIsSelfTouch,
-  } = useContext(AddRoundModalContext);
+  const { draftRound, updateDraftRound } = useContext(AddRoundModalContext);
   const { getPlayerById } = useContext(PlayersContext);
 
   return (
     <Stack gap={2}>
       <WinnerSelect
-        players={selectedPlayerIds.map(getPlayerById)}
-        winnerId={winnerId}
-        onWinnerIdChange={setWinnerId}
+        players={draftRound.playerIds.map(getPlayerById)}
+        winnerId={draftRound.winnerId}
+        onWinnerIdChange={useCallback(
+          winnerId => updateDraftRound({ winnerId }),
+          [updateDraftRound],
+        )}
       />
       <Stack direction="row-reverse" justifyContent="flex-start" flexWrap="wrap" gap={2}>
-        <FarnInput farn={farn} onFarnChange={setFarn} />
+        <FarnInput
+          farn={draftRound.farn}
+          onFarnChange={useCallback(farn => updateDraftRound({ farn }), [updateDraftRound])}
+        />
         <FormControlLabel
           control={
             <Checkbox
-              checked={isSelfTouch}
-              onChange={(_, selfTouch) => setIsSelfTouch(selfTouch)}
+              checked={draftRound.isSelfTouch}
+              onChange={useCallback(
+                (_, isSelfTouch) => updateDraftRound({ isSelfTouch }),
+                [updateDraftRound],
+              )}
             />
           }
           label={`${t.isSelfTouch} 🤏`}
