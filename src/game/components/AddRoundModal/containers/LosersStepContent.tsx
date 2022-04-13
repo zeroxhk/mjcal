@@ -1,5 +1,6 @@
 import { Checkbox, FormControlLabel, FormGroup, Stack } from '@mui/material';
-import { useContext, useEffect, useMemo } from 'react';
+import { without } from 'ramda';
+import { useContext, useMemo } from 'react';
 import { useT } from '../../../../locales/hooks/useT';
 import { PlayersContext } from '../../../../settings/contexts/PlayersContext';
 import { AddRoundModalContext } from '../AddRoundModal';
@@ -10,29 +11,18 @@ export const LosersStepContent = () => {
   const { draftRound, updateDraftRound } = useContext(AddRoundModalContext);
   const { getPlayerById } = useContext(PlayersContext);
 
-  const potentialLoserIds = useMemo(
-    () => draftRound.playerIds.filter(id => id !== draftRound.winnerId),
-    [draftRound.playerIds, draftRound.winnerId],
-  );
+  const potentialLoserIds = useMemo(() => {
+    if (!draftRound.winnerId) throw new Error('draftRound.winnerId is undefined');
+    return without([draftRound.winnerId], draftRound.playerIds);
+  }, [draftRound.playerIds, draftRound.winnerId]);
 
-  useEffect(
-    () => updateDraftRound({ isBao: draftRound.isSelfTouch && draftRound.isBao }),
-    [draftRound.isSelfTouch, draftRound.isBao],
-  );
-
-  useEffect(
-    () =>
-      updateDraftRound({
-        loserIds: draftRound.isSelfTouch && !draftRound.isBao ? potentialLoserIds : [],
-      }),
-    [draftRound.isSelfTouch, draftRound.isBao, potentialLoserIds],
-  );
+  const isBao = useMemo(() => draftRound.loserIds.length === 3, [draftRound.loserIds]);
 
   return (
     <Stack gap={2}>
       <LoserButtonGroup
         loserIds={draftRound.loserIds}
-        disabled={draftRound.isSelfTouch && !draftRound.isBao}
+        disabled={draftRound.isSelfTouch && isBao}
         onLoserIdsChange={loserIds => updateDraftRound({ loserIds })}
         players={potentialLoserIds.map(getPlayerById)}
       />
@@ -42,8 +32,16 @@ export const LosersStepContent = () => {
           <FormControlLabel
             control={
               <Checkbox
-                checked={draftRound.isBao}
-                onChange={(_, isBao) => updateDraftRound({ isBao })}
+                checked={isBao}
+                onChange={(_, isBao) => {
+                  if (!draftRound.winnerId) {
+                    throw new Error('winnerId is undefined');
+                  }
+
+                  updateDraftRound({
+                    loserIds: isBao ? potentialLoserIds : [],
+                  });
+                }}
               />
             }
             label={`${t.isBao} 🍞`}

@@ -13,7 +13,6 @@ const DEFAULT_DRAFT_ROUND: DraftRound = {
   farn: 3,
   winnerId: undefined,
   loserIds: [],
-  isBao: false,
   isSelfTouch: false,
 };
 

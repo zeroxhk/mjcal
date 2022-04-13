@@ -12,7 +12,6 @@ export type RoundWithoutId =
       winnerId: string;
       loserIds: readonly string[];
       farn: number;
-      isBao: boolean;
       isSelfTouch: boolean;
     }>;
 
@@ -27,7 +26,6 @@ export const createRandomRound = ({ playerIds }: { playerIds: readonly string[] 
     winnerId,
     loserIds: [playerIds.filter(id => id !== winnerId)[Math.floor(Math.random() * 3)]!],
     farn: Math.floor(Math.random() * 7) + 3,
-    isBao: false,
     isSelfTouch: false,
   });
 };

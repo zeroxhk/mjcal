@@ -8,7 +8,6 @@ describe('getScoresForRound', () => {
     {
       round: createRound({
         farn: 3,
-        isBao: false,
         isSelfTouch: false,
         isTied: false,
         loserIds: ['0'],
@@ -26,7 +25,6 @@ describe('getScoresForRound', () => {
     {
       round: createRound({
         farn: 4,
-        isBao: false,
         isSelfTouch: true,
         isTied: false,
         loserIds: ['0'],

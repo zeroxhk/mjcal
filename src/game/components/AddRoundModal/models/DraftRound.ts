@@ -3,6 +3,5 @@ export type DraftRound = Readonly<{
   farn: number;
   winnerId: undefined | string;
   loserIds: readonly string[];
-  isBao: boolean;
   isSelfTouch: boolean;
 }>;
