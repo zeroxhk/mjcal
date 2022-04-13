@@ -24,6 +24,7 @@ export default createCopies({
   player: '玩家',
   selfTouch: '自摸',
   isSelfTouch: '自摸？',
+  isTieGuk: '和局?',
   isBao: '包？',
   addPlayer: '新增玩家',
   chungJai: '銃制',

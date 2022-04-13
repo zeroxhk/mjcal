@@ -23,6 +23,7 @@ export type Copies = Readonly<{
   selfTouch: string;
   isSelfTouch: string;
   isBao: string;
+  isTieGuk: string;
   addPlayer: string;
   chungJai: string;
   chungJais: {

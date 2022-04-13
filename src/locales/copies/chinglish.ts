@@ -24,6 +24,7 @@ export default createCopies({
   player: 'Player',
   selfTouch: 'self-touch',
   isSelfTouch: 'Is self-touch?',
+  isTieGuk: 'Is tie?',
   isBao: 'Is bao?',
   addPlayer: 'Add player',
   chungJai: 'Chung Jai',
