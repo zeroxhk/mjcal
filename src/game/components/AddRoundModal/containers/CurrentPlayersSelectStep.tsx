@@ -3,9 +3,9 @@ import { useContext } from 'react';
 import { useT } from '../../../../locales/hooks/useT';
 import { AddRoundModalContext } from '../AddRoundModal';
 import { Actions } from '../components/Actions';
-import { CurrentPlayersSelectStepContent } from './CurrentPlayerSelectStepContent';
+import { CurrentPlayersSelectContainer } from './CurrentPlayersSelectContainer';
 
-export const CurrentPlayerSelectStep = () => {
+export const CurrentPlayersSelectStep = () => {
   const t = useT();
   const { draftRound, next, close } = useContext(AddRoundModalContext);
 
@@ -13,7 +13,7 @@ export const CurrentPlayerSelectStep = () => {
     <>
       <DialogTitle>{t.addRound}</DialogTitle>
       <DialogContent>
-        <CurrentPlayersSelectStepContent />
+        <CurrentPlayersSelectContainer />
       </DialogContent>
       <Actions
         canBack={false}

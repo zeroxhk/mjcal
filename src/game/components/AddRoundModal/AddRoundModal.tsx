@@ -1,7 +1,7 @@
 import { Dialog } from '@mui/material';
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { PlayersContext } from '../../../settings/contexts/PlayersContext';
-import { CurrentPlayerSelectStep } from './containers/CurrentPlayerSelectStep';
+import { CurrentPlayersSelectStep } from './containers/CurrentPlayersSelectStep';
 import { LosersStep } from './containers/LosersStep';
 import { WinnerStep } from './containers/WinnerStep';
 import { DraftRound } from './models/DraftRound';
@@ -92,7 +92,7 @@ export const AddRoundModal = ({
             close: useCallback(() => setOpen(false), []),
           }}
         >
-          {[() => <CurrentPlayerSelectStep />, () => <WinnerStep />, () => <LosersStep />][
+          {[() => <CurrentPlayersSelectStep />, () => <WinnerStep />, () => <LosersStep />][
             step
           ]?.()}
         </AddRoundModalContext.Provider>
