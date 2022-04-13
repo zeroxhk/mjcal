@@ -1,4 +1,3 @@
-import { zip } from 'ramda';
 import { createContext, ReactNode, useCallback, useMemo, useState } from 'react';
 import { useT } from '../../locales/hooks/useT';
 import { createPlayer, Player } from '../models/Player';
@@ -22,13 +21,7 @@ export const PlayersContextProvider = ({ children }: { children: ReactNode }) =>
   );
 
   const idToPlayerMap = useMemo(
-    () =>
-      new Map(
-        zip(
-          players.map(({ id }) => id),
-          players,
-        ),
-      ),
+    () => new Map(players.map<[string, Player]>(player => [player.id, player])),
     [players],
   );
 
