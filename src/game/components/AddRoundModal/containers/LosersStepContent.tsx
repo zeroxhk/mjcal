@@ -1,5 +1,5 @@
 import { Checkbox, FormControlLabel, FormGroup, Stack } from '@mui/material';
-import { useCallback, useContext, useEffect, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { useT } from '../../../../locales/hooks/useT';
 import { PlayersContext } from '../../../../settings/contexts/PlayersContext';
 import { AddRoundModalContext } from '../AddRoundModal';
@@ -33,10 +33,7 @@ export const LosersStepContent = () => {
       <LoserButtonGroup
         loserIds={draftRound.loserIds}
         disabled={draftRound.isSelfTouch && !draftRound.isBao}
-        onLoserIdsChange={useCallback(
-          loserIds => updateDraftRound({ loserIds }),
-          [updateDraftRound],
-        )}
+        onLoserIdsChange={loserIds => updateDraftRound({ loserIds })}
         players={potentialLoserIds.map(getPlayerById)}
       />
 
@@ -46,10 +43,7 @@ export const LosersStepContent = () => {
             control={
               <Checkbox
                 checked={draftRound.isBao}
-                onChange={useCallback(
-                  (_, isBao) => updateDraftRound({ isBao }),
-                  [updateDraftRound],
-                )}
+                onChange={(_, isBao) => updateDraftRound({ isBao })}
               />
             }
             label={`${t.isBao} 🍞`}

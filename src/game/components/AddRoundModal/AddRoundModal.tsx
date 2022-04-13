@@ -87,9 +87,9 @@ export const AddRoundModal = ({
           value={{
             draftRound,
             updateDraftRound,
-            next: useCallback(() => setStep(Math.min(step + 1, STEP_COUNT - 1)), [step]),
-            back: useCallback(() => setStep(Math.max(step - 1, 0)), [step]),
-            close: useCallback(() => setOpen(false), []),
+            next: () => setStep(Math.min(step + 1, STEP_COUNT - 1)),
+            back: () => setStep(Math.max(step - 1, 0)),
+            close: () => setOpen(false),
           }}
         >
           {[() => <CurrentPlayersSelectStep />, () => <WinnerStep />, () => <LosersStep />][

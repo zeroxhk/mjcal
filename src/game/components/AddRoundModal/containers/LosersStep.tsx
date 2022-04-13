@@ -1,5 +1,5 @@
 import { DialogContent, DialogTitle } from '@mui/material';
-import { useCallback, useContext } from 'react';
+import { useContext } from 'react';
 import { useT } from '../../../../locales/hooks/useT';
 import { GameContext } from '../../../contexts/GameContext';
 import { createRound, Round } from '../../../models/Round';
@@ -35,10 +35,10 @@ export const LosersStep = () => {
         canBack
         canNext={draftRound.loserIds.length > 0}
         nextText={t.next}
-        onNext={useCallback(() => {
+        onNext={() => {
           addRound(createRoundFromDraft(draftRound));
           close();
-        }, [close, draftRound])}
+        }}
         onBack={back}
         onClose={close}
       />

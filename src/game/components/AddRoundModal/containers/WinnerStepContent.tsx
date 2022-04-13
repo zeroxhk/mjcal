@@ -1,5 +1,5 @@
 import { Checkbox, FormControlLabel, Stack } from '@mui/material';
-import { useCallback, useContext } from 'react';
+import { useContext } from 'react';
 import { useT } from '../../../../locales/hooks/useT';
 import { PlayersContext } from '../../../../settings/contexts/PlayersContext';
 import { AddRoundModalContext } from '../AddRoundModal';
@@ -16,24 +16,15 @@ export const WinnerStepContent = () => {
       <WinnerSelect
         players={draftRound.playerIds.map(getPlayerById)}
         winnerId={draftRound.winnerId}
-        onWinnerIdChange={useCallback(
-          winnerId => updateDraftRound({ winnerId }),
-          [updateDraftRound],
-        )}
+        onWinnerIdChange={winnerId => updateDraftRound({ winnerId })}
       />
       <Stack direction="row-reverse" justifyContent="flex-start" flexWrap="wrap" gap={2}>
-        <FarnInput
-          farn={draftRound.farn}
-          onFarnChange={useCallback(farn => updateDraftRound({ farn }), [updateDraftRound])}
-        />
+        <FarnInput farn={draftRound.farn} onFarnChange={farn => updateDraftRound({ farn })} />
         <FormControlLabel
           control={
             <Checkbox
               checked={draftRound.isSelfTouch}
-              onChange={useCallback(
-                (_, isSelfTouch) => updateDraftRound({ isSelfTouch }),
-                [updateDraftRound],
-              )}
+              onChange={(_, isSelfTouch) => updateDraftRound({ isSelfTouch })}
             />
           }
           label={`${t.isSelfTouch} 🤏`}
