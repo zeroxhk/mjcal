@@ -4,17 +4,9 @@ import { PlayersContext } from '../../../settings/contexts/PlayersContext';
 import { CurrentPlayerSelectStep } from './containers/CurrentPlayerSelectStep';
 import { LosersStep } from './containers/LosersStep';
 import { WinnerStep } from './containers/WinnerStep';
+import { DraftRound } from './models/DraftRound';
 
 const STEP_COUNT = 3;
-
-export type DraftRound = Readonly<{
-  playerIds: readonly string[];
-  farn: number;
-  winnerId: undefined | string;
-  loserIds: readonly string[];
-  isBao: boolean;
-  isSelfTouch: boolean;
-}>;
 
 const DEFAULT_DRAFT_ROUND: DraftRound = {
   playerIds: [],

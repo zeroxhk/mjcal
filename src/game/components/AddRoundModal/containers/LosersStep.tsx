@@ -3,8 +3,9 @@ import { useCallback, useContext } from 'react';
 import { useT } from '../../../../locales/hooks/useT';
 import { GameContext } from '../../../contexts/GameContext';
 import { createRound, Round } from '../../../models/Round';
-import { AddRoundModalContext, DraftRound } from '../AddRoundModal';
+import { AddRoundModalContext } from '../AddRoundModal';
 import { Actions } from '../components/Actions';
+import { DraftRound } from '../models/DraftRound';
 import { LosersStepContent } from './LosersStepContent';
 
 export const createRoundFromDraft = (draftRound: DraftRound): Round => {
