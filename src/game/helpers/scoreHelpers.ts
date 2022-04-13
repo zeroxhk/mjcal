@@ -1,7 +1,13 @@
 import { ScoringSettings } from '../../settings/models/ScoringSettings';
 import { Round } from '../models/Round';
 
-export const getScorePortion = ({ farn, halfSpicyFrom }: { farn: number; halfSpicyFrom: number }): number => {
+const getScorePortion = ({
+  farn,
+  halfSpicyFrom,
+}: {
+  farn: number;
+  halfSpicyFrom: number;
+}): number => {
   return Number(
     (
       2 ** Math.min(farn, halfSpicyFrom) *
@@ -11,7 +17,7 @@ export const getScorePortion = ({ farn, halfSpicyFrom }: { farn: number; halfSpi
   );
 };
 
-export const getWinScore = ({
+const getWinScore = ({
   farn,
   halfSpicyFrom,
   baseScore,
@@ -25,7 +31,7 @@ export const getWinScore = ({
   return getScorePortion({ farn, halfSpicyFrom }) * baseScore * (isSelfTouch ? 6 : 4);
 };
 
-export const getLoseScore = ({
+const getLoseScore = ({
   score,
   chungJai,
   isLoser,
@@ -52,34 +58,55 @@ export const getLoseScore = ({
   }
 };
 
+const getScoresForRound1 = (
+  round: Round,
+  {
+    baseScore,
+    halfSpicyFrom,
+    isSelfTouch,
+    chungJai,
+  }: { baseScore: number; halfSpicyFrom: number; isSelfTouch: boolean; chungJai: 'full' | 'half' },
+): [number, number, number, number] => {
+  if (round.isTied) return [0, 0, 0, 0];
+
+  const winScore = getWinScore({
+    farn: round.farn,
+    baseScore,
+    halfSpicyFrom,
+    isSelfTouch,
+  });
+
+  return round.playerIds.map(id => {
+    if (round.winnerId === id) return winScore;
+
+    return getLoseScore({
+      score: winScore,
+      chungJai,
+      isLoser: round.loserIds.includes(id),
+      loserCount: round.loserIds.length,
+      isSelfTouch: round.isSelfTouch,
+    });
+  }) as [number, number, number, number];
+};
+
 export const getScoresForRound = (
   round: Round,
   { players, scoringSettings }: { players: { id: string }[]; scoringSettings: ScoringSettings },
 ): (number | null)[] => {
   if (round.isTied) return players.map(() => 0);
-  const winScore = getWinScore({
-    farn: round.farn,
+  const scores = getScoresForRound1(round, {
     baseScore: {
       '25chicken': 0.25,
       '51': 0.5,
       '12mosquitoes': 1,
     }[scoringSettings.chipValue],
-    halfSpicyFrom: scoringSettings.halfSpicyFrom === 'never' ? Number.POSITIVE_INFINITY : scoringSettings.halfSpicyFrom,
+    halfSpicyFrom:
+      scoringSettings.halfSpicyFrom === 'never'
+        ? Number.POSITIVE_INFINITY
+        : scoringSettings.halfSpicyFrom,
     isSelfTouch: round.isSelfTouch,
+    chungJai: scoringSettings.chungJai,
   });
 
-  const playerIdSet = new Set(round.playerIds);
-
-  return players.map(({ id }) => {
-    if (!playerIdSet.has(id)) return null;
-    if (round.winnerId === id) return winScore;
-
-    return getLoseScore({
-      score: winScore,
-      chungJai: scoringSettings.chungJai,
-      isLoser: round.loserIds.includes(id),
-      loserCount: round.loserIds.length,
-      isSelfTouch: round.isSelfTouch,
-    });
-  });
+  return players.map(({ id }) => scores[round.playerIds.indexOf(id)] ?? null);
 };
