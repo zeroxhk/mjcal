@@ -1,13 +1,15 @@
 import { BottomNavigation, BottomNavigationAction, Box, Container, Icon } from '@mui/material';
 import { ReactNode, useCallback, useContext, useMemo } from 'react';
 import { ChartPage } from '../../chart/containers/ChartPage';
+import { useModal } from '../../common/hooks/useModal';
 import { usePromptBeforeUnload } from '../../common/hooks/usePromptBeforeUnload';
 import { useT } from '../../locales/hooks/useT';
 import { RouterViewSwitch } from '../../router/components/RouterViewSwitch';
 import { useRouterContext } from '../../router/hooks/useRouterContext';
 import { SettingsPage } from '../../settings/containers/SettingsPage';
+import { AddRoundModal } from '../components/AddRoundModal/AddRoundModal';
+import { AddRoundModalTrigger } from '../components/AddRoundModal/components/AddRoundModalTrigger';
 import { GameContext } from '../contexts/GameContext';
-import { AddRoundModalContainer } from './AddRoundModalContainer';
 import { TablePage } from './TablePage';
 
 const BottomMenu = <T extends string>({
@@ -96,20 +98,28 @@ export const GamePage = () => {
     ),
   );
 
+  const [AddRoundModalContainer, openAddRoundModal] = useModal(AddRoundModal);
+
   return (
-    <Box sx={{ pb: 12 }}>
-      <Container
-        maxWidth="xl"
-        sx={{ mb: 2, display: currentLocation.path === '/settings' ? 'none' : undefined }}
-      >
-        <AddRoundModalContainer />
-      </Container>
+    <>
+      <Box sx={{ pb: 12 }}>
+        <Container
+          maxWidth="xl"
+          sx={{ mb: 2, display: currentLocation.path === '/settings' ? 'none' : undefined }}
+        >
+          <AddRoundModalTrigger onOpenModal={openAddRoundModal} />
+        </Container>
 
-      <RouterView />
+        <RouterView />
 
-      <Container maxWidth="xl" sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1 }}>
-        <BottomMenu />
-      </Container>
-    </Box>
+        <Container
+          maxWidth="xl"
+          sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1 }}
+        >
+          <BottomMenu />
+        </Container>
+      </Box>
+      <AddRoundModalContainer />
+    </>
   );
 };

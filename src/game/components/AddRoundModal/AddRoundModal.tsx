@@ -55,13 +55,14 @@ export const AddRoundModalContext = createContext<{
 });
 
 export const AddRoundModal = ({
-  TriggerComponent,
+  isOpened,
+  onClose,
 }: {
-  TriggerComponent: ({ onOpenModal }: { onOpenModal: () => void }) => JSX.Element;
+  isOpened: boolean;
+  onClose: () => void;
 }) => {
   const { players: allPlayers } = useContext(PlayersContext);
 
-  const [open, setOpen] = useState(false);
   const [step, setStep] = useState<number>(DEFAULT_STEP);
 
   const [draftRound, setDraftRound, updateDraftRound] = useDraftRound({
@@ -79,23 +80,18 @@ export const AddRoundModal = ({
   }, [open]);
 
   return (
-    <>
-      <TriggerComponent onOpenModal={() => setOpen(true)} />
-      <Dialog open={open} onClose={() => setOpen(false)} fullWidth>
-        <AddRoundModalContext.Provider
-          value={{
-            draftRound,
-            updateDraftRound,
-            next: () => setStep(Math.min(step + 1, STEP_COUNT - 1)),
-            back: () => setStep(Math.max(step - 1, 0)),
-            close: () => setOpen(false),
-          }}
-        >
-          {[() => <CurrentPlayersSelectStep />, () => <WinnerStep />, () => <LosersStep />][
-            step
-          ]?.()}
-        </AddRoundModalContext.Provider>
-      </Dialog>
-    </>
+    <Dialog open={isOpened} onClose={onClose} fullWidth>
+      <AddRoundModalContext.Provider
+        value={{
+          draftRound,
+          updateDraftRound,
+          next: () => setStep(Math.min(step + 1, STEP_COUNT - 1)),
+          back: () => setStep(Math.max(step - 1, 0)),
+          close: onClose,
+        }}
+      >
+        {[() => <CurrentPlayersSelectStep />, () => <WinnerStep />, () => <LosersStep />][step]?.()}
+      </AddRoundModalContext.Provider>
+    </Dialog>
   );
 };
