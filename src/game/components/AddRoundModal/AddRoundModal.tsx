@@ -1,9 +1,9 @@
 import { Dialog } from '@mui/material';
+import { nanoid } from 'nanoid';
 import { last } from 'ramda';
-import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import { PlayersContext } from '../../../settings/contexts/PlayersContext';
 import { GameContext } from '../../contexts/GameContext';
-import { Round } from '../../models/Round';
 import { CurrentPlayersSelectStep } from './containers/CurrentPlayersSelectStep';
 import { LosersStep } from './containers/LosersStep';
 import { WinnerStep } from './containers/WinnerStep';
@@ -22,11 +22,7 @@ const DEFAULT_DRAFT_ROUND: DraftRound = {
 
 const useDraftRound = (
   initial: DraftRound,
-): [
-  draftRound: DraftRound,
-  updateDraftRound: (partialDraft: Partial<DraftRound>) => void,
-  resetDraftRound: () => void,
-] => {
+): [draftRound: DraftRound, updateDraftRound: (partialDraft: Partial<DraftRound>) => void] => {
   const [draftRound, setDraftRound] = useState(initial);
   return [
     draftRound,
@@ -38,21 +34,10 @@ const useDraftRound = (
         })),
       [],
     ),
-    useCallback(() => setDraftRound(initial), [initial]),
   ];
 };
 
-const useLatestRound = (): Round | undefined => {
-  const { rounds } = useContext(GameContext);
-  return last(rounds);
-};
-
-const useStep = (): [
-  StepComponent: () => JSX.Element,
-  next: () => void,
-  back: () => void,
-  reset: () => void,
-] => {
+const useStep = (): [StepComponent: () => JSX.Element, next: () => void, back: () => void] => {
   const [step, setStep] = useState<number>(0);
 
   return [
@@ -64,8 +49,14 @@ const useStep = (): [
     }, [step]),
     useCallback(() => setStep(step => Math.min(step + 1, STEPS.length)), []),
     useCallback(() => setStep(step => Math.max(step - 1, 0)), []),
-    useCallback(() => setStep(0), []),
   ];
+};
+
+const useDefaultPlayerIds = (): readonly string[] => {
+  const { players: allPlayers } = useContext(PlayersContext);
+  const { rounds } = useContext(GameContext);
+
+  return last(rounds)?.playerIds ?? allPlayers.slice(0, 4).map(({ id }) => id);
 };
 
 export const AddRoundModalContext = createContext<{
@@ -82,28 +73,13 @@ export const AddRoundModalContext = createContext<{
   close: () => {},
 });
 
-export const AddRoundModal = ({
-  isOpened,
-  onClose,
-}: {
-  isOpened: boolean;
-  onClose: () => void;
-}) => {
-  const { players: allPlayers } = useContext(PlayersContext);
-  const latestRound = useLatestRound();
+const AddRoundModalImpl = ({ isOpened, onClose }: { isOpened: boolean; onClose: () => void }) => {
+  const [StepComponent, next, back] = useStep();
 
-  const [StepComponent, next, back, resetStep] = useStep();
-
-  const [draftRound, updateDraftRound, resetDraftRound] = useDraftRound({
+  const [draftRound, updateDraftRound] = useDraftRound({
     ...DEFAULT_DRAFT_ROUND,
-    playerIds: latestRound?.playerIds ?? allPlayers.slice(0, 4).map(({ id }) => id),
+    playerIds: useDefaultPlayerIds(),
   });
-
-  useEffect(() => {
-    if (!isOpened) return;
-    resetDraftRound();
-    resetStep();
-  }, [isOpened]);
 
   return (
     <Dialog open={isOpened} onClose={onClose} fullWidth>
@@ -113,5 +89,25 @@ export const AddRoundModal = ({
         <StepComponent />
       </AddRoundModalContext.Provider>
     </Dialog>
+  );
+};
+
+export const AddRoundModal = ({
+  isOpened,
+  onClose,
+}: {
+  isOpened: boolean;
+  onClose: () => void;
+}) => {
+  const [key, setKey] = useState(nanoid());
+  return (
+    <AddRoundModalImpl
+      isOpened={isOpened}
+      onClose={() => {
+        onClose();
+        setKey(nanoid());
+      }}
+      key={key}
+    />
   );
 };
