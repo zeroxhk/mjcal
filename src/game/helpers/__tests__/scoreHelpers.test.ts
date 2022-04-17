@@ -3,6 +3,12 @@ import { ScoringSettings } from '../../../settings/models/ScoringSettings';
 import { createRound } from '../../models/Round';
 import { getScoresForRound } from '../scoreHelpers';
 
+const CHIP_VALUES = {
+  '25chicken': 0.25,
+  '51': 0.5,
+  '12mosquitoes': 1,
+} as const;
+
 describe('getScoresForRound', () => {
   it.each([
     {
@@ -17,7 +23,7 @@ describe('getScoresForRound', () => {
       players: '01234567'.split('').map(id => ({ id })),
       scoringSettings: {
         chungJai: 'full',
-        chipValue: '25chicken',
+        chipValue: CHIP_VALUES['25chicken'],
         halfSpicyFrom: 4,
       } as ScoringSettings,
       expected: [-8, 8, 0, 0, null, null, null, null],
@@ -34,7 +40,7 @@ describe('getScoresForRound', () => {
       players: '01234567'.split('').map(id => ({ id })),
       scoringSettings: {
         chungJai: 'full',
-        chipValue: '25chicken',
+        chipValue: CHIP_VALUES['25chicken'],
         halfSpicyFrom: 4,
       } as ScoringSettings,
       expected: [-24, 0, null, 0, null, 24, null, null],
@@ -47,7 +53,7 @@ describe('getScoresForRound', () => {
       players: '01234567'.split('').map(id => ({ id })),
       scoringSettings: {
         chungJai: 'full',
-        chipValue: '25chicken',
+        chipValue: CHIP_VALUES['25chicken'],
         halfSpicyFrom: 4,
       } as ScoringSettings,
       expected: [0, 0, null, 0, null, 0, null, null],

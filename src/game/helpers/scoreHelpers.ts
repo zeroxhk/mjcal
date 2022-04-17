@@ -94,11 +94,7 @@ export const getScoresForRound = (
   const scores = round.isTied
     ? [0, 0, 0, 0]
     : getScoresForRound1(round, {
-        baseScore: {
-          '25chicken': 0.25,
-          '51': 0.5,
-          '12mosquitoes': 1,
-        }[scoringSettings.chipValue],
+        baseScore: scoringSettings.chipValue,
         halfSpicyFrom:
           scoringSettings.halfSpicyFrom === 'never'
             ? Number.POSITIVE_INFINITY

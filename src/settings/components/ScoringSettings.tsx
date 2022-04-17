@@ -1,4 +1,12 @@
-import { FormControl, FormLabel, Input, Paper, SxProps, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import {
+  FormControl,
+  FormLabel,
+  Input,
+  Paper,
+  SxProps,
+  ToggleButton,
+  ToggleButtonGroup,
+} from '@mui/material';
 import { useT } from '../../locales/hooks/useT';
 import { ScoringSettings as Settings } from '../models/ScoringSettings';
 
@@ -13,13 +21,17 @@ export const ScoringSettings = ({
 }) => {
   const t = useT();
   return (
-    <Paper sx={{ flexGrow: 1, display: 'flex', gap: 2, flexDirection: 'column', padding: 2, ...sx }}>
+    <Paper
+      sx={{ flexGrow: 1, display: 'flex', gap: 2, flexDirection: 'column', padding: 2, ...sx }}
+    >
       <FormControl>
         <FormLabel sx={{ mb: 1 }}>{t.chungJai}</FormLabel>
         <ToggleButtonGroup
           value={settings.chungJai}
           exclusive
-          onChange={(_, chungJai: Settings['chungJai']) => chungJai && onSetSettings({ ...settings, chungJai })}
+          onChange={(_, chungJai: Settings['chungJai']) =>
+            chungJai && onSetSettings({ ...settings, chungJai })
+          }
           fullWidth
         >
           <ToggleButton value="half">{t.chungJais.half}</ToggleButton>
@@ -32,12 +44,22 @@ export const ScoringSettings = ({
         <ToggleButtonGroup
           value={settings.chipValue}
           exclusive
-          onChange={(_, chipValue: Settings['chipValue']) => chipValue && onSetSettings({ ...settings, chipValue })}
+          onChange={(_, chipValue: number) =>
+            chipValue && onSetSettings({ ...settings, chipValue })
+          }
           fullWidth
         >
-          <ToggleButton value="25chicken">{t.chipValues.c25chicken}</ToggleButton>
-          <ToggleButton value="51">{t.chipValues.c51}</ToggleButton>
-          <ToggleButton value="12mosquitoes">{t.chipValues.c12mosquitoes}</ToggleButton>
+          {(
+            [
+              [t.chipValues.c25chicken, 0.25],
+              [t.chipValues.c51, 0.5],
+              [t.chipValues.c12mosquitoes, 1],
+            ] as const
+          ).map(([chipValueName, value], i) => (
+            <ToggleButton value={value} key={i}>
+              {chipValueName}
+            </ToggleButton>
+          ))}
         </ToggleButtonGroup>
       </FormControl>
 
@@ -61,7 +83,9 @@ export const ScoringSettings = ({
             pattern: '[0-9]{2}',
           }}
           value={['never', 4].includes(settings.halfSpicyFrom) ? '' : settings.halfSpicyFrom}
-          onChange={event => onSetSettings({ ...settings, halfSpicyFrom: Number.parseInt(event.target.value) || 4 })}
+          onChange={event =>
+            onSetSettings({ ...settings, halfSpicyFrom: Number.parseInt(event.target.value) || 4 })
+          }
           placeholder={t.halfSpicyFroms.customPlaceholder}
           sx={{ alignSelf: 'flex-start', pt: 1, pl: 1, pr: 1 }}
         />

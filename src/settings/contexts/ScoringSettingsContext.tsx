@@ -1,9 +1,15 @@
 import { createContext, ReactNode, useState } from 'react';
 import { ScoringSettings } from '../models/ScoringSettings';
 
+const CHIP_VALUES = {
+  '25chicken': 0.25,
+  '51': 0.5,
+  '12mosquitoes': 1,
+} as const;
+
 const DEFAULT_SETTINGS: ScoringSettings = {
   chungJai: 'full',
-  chipValue: '25chicken',
+  chipValue: CHIP_VALUES['25chicken'],
   halfSpicyFrom: 4,
 };
 
@@ -19,6 +25,8 @@ export const ScoringSettingsContextProvider = ({ children }: { children: ReactNo
   const [settings, setSettings] = useState<ScoringSettings>(DEFAULT_SETTINGS);
 
   return (
-    <ScoringSettingsContext.Provider value={{ settings, setSettings }}>{children}</ScoringSettingsContext.Provider>
+    <ScoringSettingsContext.Provider value={{ settings, setSettings }}>
+      {children}
+    </ScoringSettingsContext.Provider>
   );
 };
