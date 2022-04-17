@@ -5,6 +5,7 @@ export type Round = RoundWithoutId & Readonly<{ id: string }>;
 export type RoundWithoutId =
   | Readonly<{
       isTied: true;
+      playerIds: readonly [string, string, string, string];
     }>
   | Readonly<{
       isTied: false;

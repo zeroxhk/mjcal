@@ -9,6 +9,7 @@ import { DraftRound } from './models/DraftRound';
 const STEP_COUNT = 3;
 
 const DEFAULT_DRAFT_ROUND: DraftRound = {
+  isTied: false,
   playerIds: [],
   farn: 3,
   winnerId: undefined,

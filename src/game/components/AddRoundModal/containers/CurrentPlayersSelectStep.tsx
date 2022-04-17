@@ -6,18 +6,18 @@ import {
   FormGroup,
   Stack,
 } from '@mui/material';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { useT } from '../../../../locales/hooks/useT';
 import { GameContext } from '../../../contexts/GameContext';
 import { AddRoundModalContext } from '../AddRoundModal';
 import { Actions } from '../components/Actions';
+import { createRoundFromDraft } from '../models/DraftRound';
 import { CurrentPlayersSelectContainer } from './CurrentPlayersSelectContainer';
 
 export const CurrentPlayersSelectStep = () => {
   const t = useT();
-  const { draftRound, next, close } = useContext(AddRoundModalContext);
+  const { draftRound, next, close, updateDraftRound } = useContext(AddRoundModalContext);
   const { addRound } = useContext(GameContext);
-  const [isTied, setIsTied] = useState(false);
 
   return (
     <>
@@ -27,23 +27,39 @@ export const CurrentPlayersSelectStep = () => {
           <CurrentPlayersSelectContainer />
           <FormGroup sx={{ ml: 'auto' }}>
             <FormControlLabel
-              control={<Checkbox checked={isTied} onChange={(_, isTied) => setIsTied(isTied)} />}
+              control={
+                <Checkbox
+                  checked={draftRound.isTied}
+                  onChange={(_, isTied) => updateDraftRound({ isTied })}
+                />
+              }
               label={`${t.isTieGuk} 😮‍💨`}
             />
           </FormGroup>
         </Stack>
       </DialogContent>
-      <Actions
-        canBack={false}
-        canNext={draftRound.playerIds.length === 4}
-        nextText={isTied ? t.done : t.next}
-        onClose={close}
-        onNext={() => {
-          if (!isTied) return next();
-          addRound({ isTied: true });
-          close();
-        }}
-      />
+      {(({ nextText, onNext }) => (
+        <Actions
+          canBack={false}
+          canNext={draftRound.playerIds.length === 4}
+          nextText={nextText}
+          onClose={close}
+          onNext={onNext}
+        />
+      ))(
+        draftRound.isTied
+          ? {
+              nextText: t.done,
+              onNext: () => {
+                addRound(createRoundFromDraft(draftRound));
+                close();
+              },
+            }
+          : {
+              nextText: t.next,
+              onNext: next,
+            },
+      )}
     </>
   );
 };

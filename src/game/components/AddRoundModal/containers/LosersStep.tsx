@@ -2,23 +2,10 @@ import { DialogContent, DialogTitle } from '@mui/material';
 import { useContext } from 'react';
 import { useT } from '../../../../locales/hooks/useT';
 import { GameContext } from '../../../contexts/GameContext';
-import { createRound, Round } from '../../../models/Round';
 import { AddRoundModalContext } from '../AddRoundModal';
 import { Actions } from '../components/Actions';
-import { DraftRound } from '../models/DraftRound';
+import { createRoundFromDraft } from '../models/DraftRound';
 import { LosersStepContent } from './LosersStepContent';
-
-export const createRoundFromDraft = (draftRound: DraftRound): Round => {
-  if (draftRound.playerIds.length !== 4) throw new Error('playerIds.length is not 4');
-  if (!draftRound.winnerId) throw new Error('no winnerId');
-
-  return createRound({
-    ...draftRound,
-    isTied: false,
-    playerIds: draftRound.playerIds as [string, string, string, string],
-    winnerId: draftRound.winnerId!,
-  });
-};
 
 export const LosersStep = () => {
   const t = useT();
