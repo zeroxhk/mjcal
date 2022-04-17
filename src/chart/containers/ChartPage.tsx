@@ -5,7 +5,7 @@ import { useModal } from '../../common/hooks/useModal';
 import { AddRoundModal } from '../../game/components/AddRoundModal/AddRoundModal';
 import { AddRoundModalTrigger } from '../../game/components/AddRoundModal/components/AddRoundModalTrigger';
 import { GameContext } from '../../game/contexts/GameContext';
-import { getScoresForRound } from '../../game/helpers/scoreHelpers';
+import { getScoresForRound } from '../../game/helpers/getScoresForRound';
 import { useT } from '../../locales/hooks/useT';
 import { PlayersContext } from '../../settings/contexts/PlayersContext';
 import { ScoringSettingsContext } from '../../settings/contexts/ScoringSettingsContext';

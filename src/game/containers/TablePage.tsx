@@ -22,7 +22,7 @@ import { ScoringSettingsContext } from '../../settings/contexts/ScoringSettingsC
 import { AddRoundModal } from '../components/AddRoundModal/AddRoundModal';
 import { AddRoundModalTrigger } from '../components/AddRoundModal/components/AddRoundModalTrigger';
 import { GameContext } from '../contexts/GameContext';
-import { getScoresForRound } from '../helpers/scoreHelpers';
+import { getScoresForRound } from '../helpers/getScoresForRound';
 
 export const TablePage = () => {
   const t = useT();
