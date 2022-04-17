@@ -98,7 +98,7 @@ export const GamePage = () => {
     ),
   );
 
-  const [AddRoundModalContainer, openAddRoundModal] = useModal(AddRoundModal);
+  const [isAddRoundModalOpened, openAddRoundModal, closeAddRoundModal] = useModal();
 
   return (
     <>
@@ -119,7 +119,7 @@ export const GamePage = () => {
           <BottomMenu />
         </Container>
       </Box>
-      <AddRoundModalContainer />
+      <AddRoundModal isOpened={isAddRoundModalOpened} onClose={closeAddRoundModal} />
     </>
   );
 };

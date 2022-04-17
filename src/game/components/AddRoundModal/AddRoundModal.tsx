@@ -71,13 +71,13 @@ export const AddRoundModal = ({
   });
 
   useEffect(() => {
-    if (!open) return;
+    if (!isOpened) return;
     setStep(DEFAULT_STEP);
     setDraftRound({
       ...DEFAULT_DRAFT_ROUND,
       playerIds: draftRound.playerIds,
     });
-  }, [open]);
+  }, [isOpened]);
 
   return (
     <Dialog open={isOpened} onClose={onClose} fullWidth>

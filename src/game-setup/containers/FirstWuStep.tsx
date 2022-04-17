@@ -15,7 +15,7 @@ export const FirstWuStep = ({ onNext, onBack }: { onNext: () => void; onBack: ()
     }
   }, [rounds]);
 
-  const [AddRoundModalContainer, openAddRoundModal] = useModal(AddRoundModal);
+  const [isAddRoundModalOpened, openAddRoundModal, closeAddRoundModal] = useModal();
 
   return (
     <>
@@ -53,7 +53,7 @@ export const FirstWuStep = ({ onNext, onBack }: { onNext: () => void; onBack: ()
           <HilariouslyBigAddRoundModalTrigger onOpenModal={openAddRoundModal} />
         </Box>
       </Stack>
-      <AddRoundModalContainer />
+      <AddRoundModal isOpened={isAddRoundModalOpened} onClose={closeAddRoundModal} />
     </>
   );
 };

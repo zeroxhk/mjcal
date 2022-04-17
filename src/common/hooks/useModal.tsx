@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
-export const useModal = (
-  Modal: (props: { isOpened: boolean; onClose: () => void }) => JSX.Element,
-): [Modal: () => JSX.Element, open: () => void, close: () => void, isOpened: boolean] => {
+export const useModal = (): [isOpened: boolean, open: () => void, close: () => void] => {
   const [isOpened, setIsOpened] = useState(false);
-  const open = () => setIsOpened(true);
-  const close = () => setIsOpened(false);
 
-  return [() => <Modal isOpened={isOpened} onClose={close} />, open, close, isOpened];
+  return [
+    isOpened,
+    useCallback(() => setIsOpened(true), []),
+    useCallback(() => setIsOpened(false), []),
+  ];
 };
