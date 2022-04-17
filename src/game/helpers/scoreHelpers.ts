@@ -1,104 +1,91 @@
+import { negate } from 'ramda';
+import { trunc } from 'ramda-adjunct';
 import { ScoringSettings } from '../../settings/models/ScoringSettings';
 import { Round } from '../models/Round';
 
-const getScorePortion = ({
+const getBaseScore = ({
   farn,
+  chipValue,
   halfSpicyFrom,
 }: {
   farn: number;
+  chipValue: number;
   halfSpicyFrom: number;
-}): number => {
-  return Number(
-    (
-      2 ** Math.min(farn, halfSpicyFrom) *
+}): number =>
+  trunc(
+    2 ** Math.min(farn, halfSpicyFrom) *
       1.5 ** Math.max(0, Math.ceil((farn - halfSpicyFrom) / 2)) *
-      (4 / 3) ** Math.max(0, Math.floor((farn - halfSpicyFrom) / 2))
-    ).toFixed(2),
-  );
+      (4 / 3) ** Math.max(0, Math.floor((farn - halfSpicyFrom) / 2)),
+  ) * chipValue;
+
+const getWinScale = ({ isSelfTouch }: { isSelfTouch: boolean }): number => {
+  return isSelfTouch ? 6 : 4;
 };
 
-const getWinScore = ({
-  farn,
-  halfSpicyFrom,
-  baseScore,
-  isSelfTouch,
-}: {
-  farn: number;
-  halfSpicyFrom: number;
-  baseScore: number;
-  isSelfTouch: boolean;
-}): number => {
-  return getScorePortion({ farn, halfSpicyFrom }) * baseScore * (isSelfTouch ? 6 : 4);
-};
-
-const getLoseScore = ({
-  score,
-  chungJai,
+const getSelfTouchLoserScale = ({
   isLoser,
-  loserCount,
-  isSelfTouch,
+  isBao,
 }: {
-  score: number;
-  chungJai: 'full' | 'half';
   isLoser: boolean;
-  loserCount: number;
-  isSelfTouch: boolean;
+  isBao: boolean;
 }): number => {
-  if (isSelfTouch) {
-    return isLoser ? (-1 * score) / loserCount : 0;
-  }
+  if (!isLoser) return 0;
+  if (isBao) return 6;
+  return 2;
+};
 
+const getOutChungLoserScale = ({
+  chungJai,
+  isOutChunger,
+}: {
+  chungJai: ScoringSettings['chungJai'];
+  isOutChunger: boolean;
+}): number => {
   switch (chungJai) {
     case 'full': {
-      return isLoser ? -1 * score : 0;
+      if (isOutChunger) return 4;
+      return 0;
     }
     case 'half': {
-      return (-1 * score) / (isLoser ? 2 : 4);
+      if (isOutChunger) return 2;
+      return 1;
     }
   }
 };
 
-const getScoresForRound1 = (
-  round: Round & { isTied: false },
-  {
-    baseScore,
-    halfSpicyFrom,
-    isSelfTouch,
-    chungJai,
-  }: { baseScore: number; halfSpicyFrom: number; isSelfTouch: boolean; chungJai: 'full' | 'half' },
+const getScoresForRoundPlayers = (
+  round: Round,
+  { chipValue, halfSpicyFrom, chungJai }: ScoringSettings,
 ): [number, number, number, number] => {
-  const winScore = getWinScore({
-    farn: round.farn,
-    baseScore,
-    halfSpicyFrom,
-    isSelfTouch,
-  });
+  if (round.isTied) return [0, 0, 0, 0];
+  const baseScore = getBaseScore({ farn: round.farn, halfSpicyFrom, chipValue });
+  const scales = round.playerIds.map(id =>
+    round.winnerId === id
+      ? getWinScale({ isSelfTouch: round.isSelfTouch })
+      : negate(
+          round.isSelfTouch
+            ? getSelfTouchLoserScale({
+                isLoser: round.loserIds.includes(id),
+                isBao: round.loserIds.length === 1,
+              })
+            : getOutChungLoserScale({
+                chungJai,
+                isOutChunger: round.loserIds.includes(id),
+              }),
+        ),
+  );
 
-  return round.playerIds.map(id => {
-    if (round.winnerId === id) return winScore;
-
-    return getLoseScore({
-      score: winScore,
-      chungJai,
-      isLoser: round.loserIds.includes(id),
-      loserCount: round.loserIds.length,
-      isSelfTouch: round.isSelfTouch,
-    });
-  }) as [number, number, number, number];
+  return scales.map(scale => baseScore * scale) as [number, number, number, number];
 };
 
 export const getScoresForRound = (
   round: Round,
-  { players, scoringSettings }: { players: { id: string }[]; scoringSettings: ScoringSettings },
+  {
+    allPlayers,
+    scoringSettings,
+  }: { allPlayers: { id: string }[]; scoringSettings: ScoringSettings },
 ): (number | null)[] => {
-  const scores = round.isTied
-    ? [0, 0, 0, 0]
-    : getScoresForRound1(round, {
-        baseScore: scoringSettings.chipValue,
-        halfSpicyFrom: scoringSettings.halfSpicyFrom,
-        isSelfTouch: round.isSelfTouch,
-        chungJai: scoringSettings.chungJai,
-      });
+  const scores = getScoresForRoundPlayers(round, scoringSettings);
 
-  return players.map(({ id }) => scores[round.playerIds.indexOf(id)] ?? null);
+  return allPlayers.map(({ id }) => scores[round.playerIds.indexOf(id)] ?? null);
 };

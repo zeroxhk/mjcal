@@ -20,13 +20,13 @@ describe('getScoresForRound', () => {
         winnerId: '1',
         playerIds: ['0', '1', '2', '3'],
       }),
-      players: '01234567'.split('').map(id => ({ id })),
+      allPlayers: '01234567'.split('').map(id => ({ id })),
       scoringSettings: {
         chungJai: 'full',
         chipValue: CHIP_VALUES['25chicken'],
         halfSpicyFrom: 4,
       } as ScoringSettings,
-      expected: [-8, 8, 0, 0, null, null, null, null],
+      expected: [-8, 8, -0, -0, null, null, null, null],
     },
     {
       round: createRound({
@@ -37,20 +37,20 @@ describe('getScoresForRound', () => {
         winnerId: '5',
         playerIds: ['0', '5', '1', '3'],
       }),
-      players: '01234567'.split('').map(id => ({ id })),
+      allPlayers: '01234567'.split('').map(id => ({ id })),
       scoringSettings: {
         chungJai: 'full',
         chipValue: CHIP_VALUES['25chicken'],
         halfSpicyFrom: 4,
       } as ScoringSettings,
-      expected: [-24, 0, null, 0, null, 24, null, null],
+      expected: [-24, -0, null, -0, null, 24, null, null],
     },
     {
       round: createRound({
         isTied: true,
         playerIds: ['0', '5', '1', '3'],
       }),
-      players: '01234567'.split('').map(id => ({ id })),
+      allPlayers: '01234567'.split('').map(id => ({ id })),
       scoringSettings: {
         chungJai: 'full',
         chipValue: CHIP_VALUES['25chicken'],
@@ -60,8 +60,8 @@ describe('getScoresForRound', () => {
     },
   ])(
     'it should calculate correct score for each player',
-    ({ round, players, scoringSettings, expected }) => {
-      expect(getScoresForRound(round, { players, scoringSettings })).toEqual(expected);
+    ({ round, allPlayers, scoringSettings, expected }) => {
+      expect(getScoresForRound(round, { allPlayers, scoringSettings })).toEqual(expected);
     },
   );
 });

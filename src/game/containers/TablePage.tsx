@@ -31,7 +31,9 @@ export const TablePage = () => {
   const { settings: scoringSettings } = useContext(ScoringSettingsContext);
 
   const [roundIdToScoresMap, playerIdToTotalScoreMap] = useMemo(() => {
-    const scoress = rounds.map(round => getScoresForRound(round, { players, scoringSettings }));
+    const scoress = rounds.map(round =>
+      getScoresForRound(round, { allPlayers: players, scoringSettings }),
+    );
     return [
       new Map(
         zip(

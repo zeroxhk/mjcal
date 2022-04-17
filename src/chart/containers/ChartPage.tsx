@@ -17,7 +17,7 @@ export const ChartPage = () => {
   const { settings: scoringSettings } = useContext(ScoringSettingsContext);
   const { rounds } = useContext(GameContext);
   const scoress = transpose(
-    rounds.map(round => getScoresForRound(round, { players, scoringSettings })),
+    rounds.map(round => getScoresForRound(round, { allPlayers: players, scoringSettings })),
   );
 
   const [isAddRoundModalOpened, openAddRoundModal, closeAddRoundModal] = useModal();
