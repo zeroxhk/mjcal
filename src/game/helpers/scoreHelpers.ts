@@ -59,7 +59,7 @@ const getLoseScore = ({
 };
 
 const getScoresForRound1 = (
-  round: Round,
+  round: Round & { isTied: false },
   {
     baseScore,
     halfSpicyFrom,
@@ -67,8 +67,6 @@ const getScoresForRound1 = (
     chungJai,
   }: { baseScore: number; halfSpicyFrom: number; isSelfTouch: boolean; chungJai: 'full' | 'half' },
 ): [number, number, number, number] => {
-  if (round.isTied) return [0, 0, 0, 0];
-
   const winScore = getWinScore({
     farn: round.farn,
     baseScore,
@@ -93,20 +91,21 @@ export const getScoresForRound = (
   round: Round,
   { players, scoringSettings }: { players: { id: string }[]; scoringSettings: ScoringSettings },
 ): (number | null)[] => {
-  if (round.isTied) return players.map(() => 0);
-  const scores = getScoresForRound1(round, {
-    baseScore: {
-      '25chicken': 0.25,
-      '51': 0.5,
-      '12mosquitoes': 1,
-    }[scoringSettings.chipValue],
-    halfSpicyFrom:
-      scoringSettings.halfSpicyFrom === 'never'
-        ? Number.POSITIVE_INFINITY
-        : scoringSettings.halfSpicyFrom,
-    isSelfTouch: round.isSelfTouch,
-    chungJai: scoringSettings.chungJai,
-  });
+  const scores = round.isTied
+    ? [0, 0, 0, 0]
+    : getScoresForRound1(round, {
+        baseScore: {
+          '25chicken': 0.25,
+          '51': 0.5,
+          '12mosquitoes': 1,
+        }[scoringSettings.chipValue],
+        halfSpicyFrom:
+          scoringSettings.halfSpicyFrom === 'never'
+            ? Number.POSITIVE_INFINITY
+            : scoringSettings.halfSpicyFrom,
+        isSelfTouch: round.isSelfTouch,
+        chungJai: scoringSettings.chungJai,
+      });
 
   return players.map(({ id }) => scores[round.playerIds.indexOf(id)] ?? null);
 };

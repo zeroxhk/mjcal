@@ -39,6 +39,19 @@ describe('getScoresForRound', () => {
       } as ScoringSettings,
       expected: [-24, 0, null, 0, null, 24, null, null],
     },
+    {
+      round: createRound({
+        isTied: true,
+        playerIds: ['0', '5', '1', '3'],
+      }),
+      players: '01234567'.split('').map(id => ({ id })),
+      scoringSettings: {
+        chungJai: 'full',
+        chipValue: '25chicken',
+        halfSpicyFrom: 4,
+      } as ScoringSettings,
+      expected: [0, 0, null, 0, null, 0, null, null],
+    },
   ])(
     'it should calculate correct score for each player',
     ({ round, players, scoringSettings, expected }) => {
