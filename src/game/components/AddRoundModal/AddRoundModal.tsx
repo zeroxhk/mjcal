@@ -1,6 +1,6 @@
 import { Dialog } from '@mui/material';
 import { last } from 'ramda';
-import { createContext, useCallback, useContext, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import { PlayersContext } from '../../../settings/contexts/PlayersContext';
 import { GameContext } from '../../contexts/GameContext';
 import { Round } from '../../models/Round';
@@ -24,7 +24,11 @@ const DEFAULT_STEP = 0 as const;
 
 const useDraftRound = (
   initial: DraftRound,
-): [draftRound: DraftRound, updateDraftRound: (partialDraft: Partial<DraftRound>) => void] => {
+): [
+  draftRound: DraftRound,
+  updateDraftRound: (partialDraft: Partial<DraftRound>) => void,
+  resetDraftRound: () => void,
+] => {
   const [draftRound, setDraftRound] = useState(initial);
   return [
     draftRound,
@@ -36,6 +40,7 @@ const useDraftRound = (
         })),
       [],
     ),
+    useCallback(() => setDraftRound(initial), [initial]),
   ];
 };
 
@@ -70,10 +75,16 @@ export const AddRoundModal = ({
 
   const [step, setStep] = useState<number>(DEFAULT_STEP);
 
-  const [draftRound, updateDraftRound] = useDraftRound({
+  const [draftRound, updateDraftRound, resetDraftRound] = useDraftRound({
     ...DEFAULT_DRAFT_ROUND,
     playerIds: latestRound?.playerIds ?? allPlayers.slice(0, 4).map(({ id }) => id),
   });
+
+  useEffect(() => {
+    if (!isOpened) return;
+    resetDraftRound();
+    setStep(0);
+  }, [isOpened]);
 
   return (
     <Dialog open={isOpened} onClose={onClose} fullWidth>
