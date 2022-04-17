@@ -1,8 +1,10 @@
 import {
+  Box,
   Container,
   Icon,
   IconButton,
   Paper,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -13,9 +15,12 @@ import {
 } from '@mui/material';
 import { sum, transpose, zip } from 'ramda';
 import { useContext, useMemo } from 'react';
+import { useModal } from '../../common/hooks/useModal';
 import { useT } from '../../locales/hooks/useT';
 import { PlayersContext } from '../../settings/contexts/PlayersContext';
 import { ScoringSettingsContext } from '../../settings/contexts/ScoringSettingsContext';
+import { AddRoundModal } from '../components/AddRoundModal/AddRoundModal';
+import { AddRoundModalTrigger } from '../components/AddRoundModal/components/AddRoundModalTrigger';
 import { GameContext } from '../contexts/GameContext';
 import { getScoresForRound } from '../helpers/scoreHelpers';
 
@@ -43,70 +48,82 @@ export const TablePage = () => {
     ] as const;
   }, [rounds, players, scoringSettings]);
 
+  const [isAddRoundModalOpened, openAddRoundModal, closeAddRoundModal] = useModal();
+
   return (
-    <Container maxWidth="xl" sx={{ pb: 8 }}>
-      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-        <TableContainer sx={{ maxHeight: '65vh' }}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow sx={{ whiteSpace: 'nowrap' }}>
-                <TableCell padding="checkbox"></TableCell>
-                <TableCell padding="none">#</TableCell>
-                {players.map(player => (
-                  <TableCell key={player.id}>{player.name}</TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rounds.length <= 0 ? (
-                <TableRow>
-                  <TableCell colSpan={2 + players.length} align="center">
-                    {t.noData}
-                  </TableCell>
-                </TableRow>
-              ) : (
-                <>
-                  {rounds.map(({ id }, i) => (
-                    <TableRow key={`round${i}`}>
-                      <TableCell size="small">
-                        <IconButton
-                          onClick={() => {
-                            if (window.confirm(t.removeRoundMessage)) {
-                              removeRound(id);
-                            }
-                          }}
-                        >
-                          <Icon fontSize="inherit">delete</Icon>
-                        </IconButton>
-                      </TableCell>
-                      <TableCell padding="none">#{i + 1}</TableCell>
-                      {roundIdToScoresMap.get(id)!.map((score, i) => (
-                        <TableCell key={i} sx={{ color: getScoreColor(score) }}>
-                          {score ?? '-'}
-                        </TableCell>
-                      ))}
-                    </TableRow>
+    <Container maxWidth="xl">
+      <Stack gap={2} alignItems={'flex-start'}>
+        <Box>
+          <AddRoundModalTrigger onOpenModal={openAddRoundModal} />
+          <AddRoundModal isOpened={isAddRoundModalOpened} onClose={closeAddRoundModal} />
+        </Box>
+
+        <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+          <TableContainer sx={{ maxHeight: '65vh' }}>
+            <Table stickyHeader aria-label="sticky table">
+              <TableHead>
+                <TableRow sx={{ whiteSpace: 'nowrap' }}>
+                  <TableCell padding="checkbox"></TableCell>
+                  <TableCell padding="none">#</TableCell>
+                  {players.map(player => (
+                    <TableCell key={player.id}>{player.name}</TableCell>
                   ))}
-                  <TableRow
-                    sx={({ palette }) => ({ bgcolor: '#122b36', color: palette.info.contrastText })}
-                    ref={el => el?.scrollIntoView()}
-                  >
-                    <TableCell></TableCell>
-                    <TableCell padding="none">Sum</TableCell>
-                    {players
-                      .map(({ id }) => playerIdToTotalScoreMap.get(id)!)
-                      .map((total, i) => (
-                        <TableCell key={i} sx={{ color: getScoreColor(total) }}>
-                          {total}
-                        </TableCell>
-                      ))}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rounds.length <= 0 ? (
+                  <TableRow>
+                    <TableCell colSpan={2 + players.length} align="center">
+                      {t.noData}
+                    </TableCell>
                   </TableRow>
-                </>
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
+                ) : (
+                  <>
+                    {rounds.map(({ id }, i) => (
+                      <TableRow key={`round${i}`}>
+                        <TableCell size="small">
+                          <IconButton
+                            onClick={() => {
+                              if (window.confirm(t.removeRoundMessage)) {
+                                removeRound(id);
+                              }
+                            }}
+                          >
+                            <Icon fontSize="inherit">delete</Icon>
+                          </IconButton>
+                        </TableCell>
+                        <TableCell padding="none">#{i + 1}</TableCell>
+                        {roundIdToScoresMap.get(id)!.map((score, i) => (
+                          <TableCell key={i} sx={{ color: getScoreColor(score) }}>
+                            {score ?? '-'}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))}
+                    <TableRow
+                      sx={({ palette }) => ({
+                        bgcolor: '#122b36',
+                        color: palette.info.contrastText,
+                      })}
+                      ref={el => el?.scrollIntoView()}
+                    >
+                      <TableCell></TableCell>
+                      <TableCell padding="none">Sum</TableCell>
+                      {players
+                        .map(({ id }) => playerIdToTotalScoreMap.get(id)!)
+                        .map((total, i) => (
+                          <TableCell key={i} sx={{ color: getScoreColor(total) }}>
+                            {total}
+                          </TableCell>
+                        ))}
+                    </TableRow>
+                  </>
+                )}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
+      </Stack>
     </Container>
   );
 };

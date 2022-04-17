@@ -1,6 +1,9 @@
 import { Dialog } from '@mui/material';
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { last } from 'ramda';
+import { createContext, useCallback, useContext, useState } from 'react';
 import { PlayersContext } from '../../../settings/contexts/PlayersContext';
+import { GameContext } from '../../contexts/GameContext';
+import { Round } from '../../models/Round';
 import { CurrentPlayersSelectStep } from './containers/CurrentPlayersSelectStep';
 import { LosersStep } from './containers/LosersStep';
 import { WinnerStep } from './containers/WinnerStep';
@@ -21,22 +24,17 @@ const DEFAULT_STEP = 0 as const;
 
 const useDraftRound = (
   initial: DraftRound,
-): [
-  draftRound: DraftRound,
-  setDraftRound: (partialDraft: DraftRound) => void,
-  updateDraftRound: (partialDraft: Partial<DraftRound>) => void,
-] => {
+): [draftRound: DraftRound, updateDraftRound: (partialDraft: Partial<DraftRound>) => void] => {
   const [draftRound, setDraftRound] = useState(initial);
   return [
     draftRound,
-    setDraftRound,
     useCallback(
       partialDraftRound =>
-        setDraftRound({
-          ...draftRound,
+        setDraftRound(currentDraft => ({
+          ...currentDraft,
           ...partialDraftRound,
-        }),
-      [draftRound],
+        })),
+      [],
     ),
   ];
 };
@@ -55,6 +53,11 @@ export const AddRoundModalContext = createContext<{
   close: () => {},
 });
 
+const useLatestRound = (): Round | undefined => {
+  const { rounds } = useContext(GameContext);
+  return last(rounds);
+};
+
 export const AddRoundModal = ({
   isOpened,
   onClose,
@@ -63,22 +66,14 @@ export const AddRoundModal = ({
   onClose: () => void;
 }) => {
   const { players: allPlayers } = useContext(PlayersContext);
+  const latestRound = useLatestRound();
 
   const [step, setStep] = useState<number>(DEFAULT_STEP);
 
-  const [draftRound, setDraftRound, updateDraftRound] = useDraftRound({
+  const [draftRound, updateDraftRound] = useDraftRound({
     ...DEFAULT_DRAFT_ROUND,
-    playerIds: allPlayers.slice(0, 4).map(({ id }) => id),
+    playerIds: latestRound?.playerIds ?? allPlayers.slice(0, 4).map(({ id }) => id),
   });
-
-  useEffect(() => {
-    if (!isOpened) return;
-    setStep(DEFAULT_STEP);
-    setDraftRound({
-      ...DEFAULT_DRAFT_ROUND,
-      playerIds: draftRound.playerIds,
-    });
-  }, [isOpened]);
 
   return (
     <Dialog open={isOpened} onClose={onClose} fullWidth>
