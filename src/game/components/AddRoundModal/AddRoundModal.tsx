@@ -2,7 +2,7 @@ import { Dialog } from '@mui/material';
 import { nanoid } from 'nanoid';
 import { last } from 'ramda';
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
-import { PlayersContext } from '../../../settings/contexts/PlayersContext';
+import { PlayersContext } from '../../../game-settings/contexts/PlayersContext';
 import { GameContext } from '../../contexts/GameContext';
 import { CurrentPlayersSelectStep } from './containers/CurrentPlayersSelectStep';
 import { LosersStep } from './containers/LosersStep';

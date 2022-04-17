@@ -1,7 +1,7 @@
 import { FormControl, FormLabel, ToggleButton, ToggleButtonGroup } from '@mui/material';
 import { useMemo } from 'react';
+import { Player } from '../../../../game-settings/models/Player';
 import { useT } from '../../../../locales/hooks/useT';
-import { Player } from '../../../../settings/models/Player';
 
 export const CurrentPlayersSelect = ({
   allPlayers,

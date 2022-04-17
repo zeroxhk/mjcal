@@ -1,6 +1,6 @@
 import { Button, Stack, Typography } from '@mui/material';
+import { ScoringSettingsContainer } from '../../game-settings/containers/ScoringSettingsContainer';
 import { useT } from '../../locales/hooks/useT';
-import { ScoringSettingsContainer } from '../../settings/containers/ScoringSettingsContainer';
 
 export const ScoringSettingsStep = ({ onNext }: { onNext: () => void }) => {
   const t = useT();

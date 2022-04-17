@@ -1,6 +1,6 @@
 import { FormLabel, Stack, ToggleButton, ToggleButtonGroup } from '@mui/material';
+import { Player } from '../../../../game-settings/models/Player';
 import { useT } from '../../../../locales/hooks/useT';
-import { Player } from '../../../../settings/models/Player';
 
 export const LoserButtonGroup = ({
   players,

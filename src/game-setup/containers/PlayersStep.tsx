@@ -1,6 +1,6 @@
 import { Button, Stack, Typography } from '@mui/material';
+import { PlayerListContainer } from '../../game-settings/containers/PlayerListContainer';
 import { useT } from '../../locales/hooks/useT';
-import { PlayerListContainer } from '../../settings/containers/PlayerListContainer';
 
 export const PlayersStep = ({ onBack, onNext }: { onBack: () => void; onNext: () => void }) => {
   const t = useT();

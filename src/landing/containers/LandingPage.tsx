@@ -1,11 +1,11 @@
 import { Button, Container, Icon, Stack, Typography } from '@mui/material';
 import { add, scan, transpose, zip } from 'ramda';
 import { useEffect, useState } from 'react';
-import { ScrollableChart } from '../../chart/components/ScrollableChart';
 import { Footer } from '../../common/components/Footer';
 import { interval } from '../../common/helpers/interval';
 import { pickOneRandomly, pickRandom, randomInteger } from '../../common/helpers/random';
 import { useDynamicImport } from '../../common/hooks/useDynamicImport';
+import { ScrollableChart } from '../../game-chart/components/ScrollableChart';
 import { useT } from '../../locales/hooks/useT';
 import { useNavigate } from '../../router/hooks/useNavigate';
 

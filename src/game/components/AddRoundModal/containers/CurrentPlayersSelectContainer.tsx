@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { PlayersContext } from '../../../../settings/contexts/PlayersContext';
+import { PlayersContext } from '../../../../game-settings/contexts/PlayersContext';
 import { AddRoundModalContext } from '../AddRoundModal';
 import { CurrentPlayersSelect } from '../components/CurrentPlayersSelect';
 

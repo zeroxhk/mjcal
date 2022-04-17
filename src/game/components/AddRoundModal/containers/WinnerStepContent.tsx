@@ -1,7 +1,7 @@
 import { Checkbox, FormControlLabel, Stack } from '@mui/material';
 import { useContext } from 'react';
+import { PlayersContext } from '../../../../game-settings/contexts/PlayersContext';
 import { useT } from '../../../../locales/hooks/useT';
-import { PlayersContext } from '../../../../settings/contexts/PlayersContext';
 import { AddRoundModalContext } from '../AddRoundModal';
 import { FarnInput } from '../components/FarnInput';
 import { WinnerSelect } from '../components/WinnerSelect';

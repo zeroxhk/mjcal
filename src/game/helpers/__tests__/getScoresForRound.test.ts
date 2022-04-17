@@ -1,5 +1,5 @@
 import { expect, it } from 'vitest';
-import { ScoringSettings } from '../../../settings/models/ScoringSettings';
+import { ScoringSettings } from '../../../game-settings/models/ScoringSettings';
 import { createRound } from '../../models/Round';
 import { getScoresForRound } from '../getScoresForRound';
 

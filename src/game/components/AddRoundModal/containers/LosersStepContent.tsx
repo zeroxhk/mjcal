@@ -1,8 +1,8 @@
 import { Checkbox, FormControlLabel, FormGroup, Stack } from '@mui/material';
 import { without } from 'ramda';
 import { useContext, useMemo } from 'react';
+import { PlayersContext } from '../../../../game-settings/contexts/PlayersContext';
 import { useT } from '../../../../locales/hooks/useT';
-import { PlayersContext } from '../../../../settings/contexts/PlayersContext';
 import { AddRoundModalContext } from '../AddRoundModal';
 import { LoserButtonGroup } from '../components/LoserButtonGroup';
 

@@ -1,11 +1,11 @@
 import { BottomNavigation, BottomNavigationAction, Box, Container, Icon } from '@mui/material';
 import { ReactNode, useCallback, useContext, useMemo } from 'react';
-import { ChartPage } from '../../chart/containers/ChartPage';
 import { usePromptBeforeUnload } from '../../common/hooks/usePromptBeforeUnload';
+import { ChartPage } from '../../game-chart/containers/ChartPage';
+import { SettingsPage } from '../../game-settings/containers/SettingsPage';
 import { useT } from '../../locales/hooks/useT';
 import { RouterViewSwitch } from '../../router/components/RouterViewSwitch';
 import { useRouterContext } from '../../router/hooks/useRouterContext';
-import { SettingsPage } from '../../settings/containers/SettingsPage';
 import { GameContext } from '../contexts/GameContext';
 import { TablePage } from './TablePage';
 

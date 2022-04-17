@@ -1,10 +1,10 @@
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import { ReactNode } from 'react';
+import { PlayersContextProvider } from '../../game-settings/contexts/PlayersContext';
+import { ScoringSettingsContextProvider } from '../../game-settings/contexts/ScoringSettingsContext';
 import { GameContextProvider } from '../../game/contexts/GameContext';
 import { LocaleContextProvider } from '../../locales/contexts/LocaleContext';
 import { RouterContextProvider } from '../../router/contexts/RouterContext';
-import { PlayersContextProvider } from '../../settings/contexts/PlayersContext';
-import { ScoringSettingsContextProvider } from '../../settings/contexts/ScoringSettingsContext';
 import { NestComponents } from '../components/NestComponents';
 
 export const AppContextsProvider = ({ children }: { children: ReactNode }) => {
@@ -24,7 +24,13 @@ export const AppContextsProvider = ({ children }: { children: ReactNode }) => {
           })}
         >
           <CssBaseline />
-          <NestComponents components={[PlayersContextProvider, GameContextProvider, ScoringSettingsContextProvider]}>
+          <NestComponents
+            components={[
+              PlayersContextProvider,
+              GameContextProvider,
+              ScoringSettingsContextProvider,
+            ]}
+          >
             {children}
           </NestComponents>
         </ThemeProvider>

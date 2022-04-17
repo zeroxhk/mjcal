@@ -1,6 +1,6 @@
 import { negate } from 'ramda';
 import { trunc } from 'ramda-adjunct';
-import { ScoringSettings } from '../../settings/models/ScoringSettings';
+import { ScoringSettings } from '../../game-settings/models/ScoringSettings';
 import { Round } from '../models/Round';
 
 const getBaseScore = ({
