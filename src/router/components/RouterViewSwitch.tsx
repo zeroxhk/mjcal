@@ -24,12 +24,16 @@ export const RouterViewSwitch = <V extends readonly Route[]>({ views }: { views:
 
   const currentPath = currentLocation.path;
   const view = views.find(({ path }) => matchRoute(path, currentPath));
-  if (!view) return null;
 
-  if ('redirect' in view) {
-    useEffectOnce(() => replace({ path: view.redirect }));
-    return null;
-  }
+  useEffectOnce(() => {
+    if (!view) return;
+    if ('redirect' in view) {
+      replace({ path: view.redirect });
+    }
+  });
+
+  if (!view) return null;
+  if ('redirect' in view) return null;
 
   return (
     <RouterContextProvider rootPath={view.path === '/' ? '' : view.path}>

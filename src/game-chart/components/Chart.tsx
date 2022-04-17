@@ -7,6 +7,11 @@ export const Chart = ({ data }: { data: { playerName: string; scores: (number | 
   const theme = useTheme();
   const t = useT();
 
+  const yScaleMax = useMemo(
+    () => Math.max(...data.flatMap(({ scores }) => scores).map(s => Math.abs(s ?? 0))),
+    [data],
+  );
+
   return (
     <ResponsiveLine
       data={useMemo(
@@ -40,18 +45,11 @@ export const Chart = ({ data }: { data: { playerName: string; scores: (number | 
         },
       }}
       margin={{ top: 20, right: 20, bottom: 85, left: 60 }}
-      yScale={(() => {
-        const yScaleMax = useMemo(
-          () => Math.max(...data.flatMap(({ scores }) => scores).map(s => Math.abs(s ?? 0))),
-          [data],
-        );
-
-        return {
-          type: 'linear',
-          min: -yScaleMax,
-          max: yScaleMax,
-        };
-      })()}
+      yScale={{
+        type: 'linear',
+        min: -yScaleMax,
+        max: yScaleMax,
+      }}
       colors={{ scheme: 'set3' }}
       gridXValues={data[0]?.scores.length ?? 0}
       axisBottom={{

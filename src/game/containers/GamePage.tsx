@@ -41,20 +41,22 @@ const useBottomMenuRouterViewSwitch = <T extends string>(
 ) => {
   const { currentLocation, navigate } = useRouterContext();
 
+  const items = useMemo(
+    () => views.map(({ path, label, icon }) => ({ id: path, label, icon })),
+    [views],
+  );
+
   return [
     useCallback(() => <RouterViewSwitch views={views} />, [views]),
     useCallback(
       () => (
         <BottomMenu
-          items={useMemo(
-            () => views.map(({ path, label, icon }) => ({ id: path, label, icon })),
-            [views],
-          )}
+          items={items}
           selectedItemId={currentLocation.path}
           onSelectedItemIdChange={path => navigate({ path })}
         />
       ),
-      [views, currentLocation, navigate],
+      [currentLocation, navigate, items],
     ),
   ] as const;
 };

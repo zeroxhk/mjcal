@@ -53,9 +53,15 @@ const useParentRouterContext = (
       () => createLocationFromPath(parentContext.currentLocation.path.slice(rootPath.length)),
       [parentContext.currentLocation.path, rootPath],
     ),
-    useCallback(({ path }: Location) => parentContext.navigate({ path: `${rootPath}${path}` }), [rootPath]),
+    useCallback(
+      ({ path }: Location) => parentContext.navigate({ path: `${rootPath}${path}` }),
+      [rootPath, parentContext],
+    ),
     parentContext.navigateAbsolute,
-    useCallback(({ path }: Location) => parentContext.replace({ path: `${rootPath}${path}` }), [rootPath]),
+    useCallback(
+      ({ path }: Location) => parentContext.replace({ path: `${rootPath}${path}` }),
+      [rootPath, parentContext],
+    ),
     parentContext.replaceAbsolute,
   ];
 };
@@ -78,11 +84,15 @@ export const RouterContextProvider = ({
 } = {}) => {
   const parentContext = useContext(RouterContext);
   const [currentLocation, navigate, navigateAbsolute, replace, replaceAbsolute] = parentContext
-    ? useParentRouterContext(rootPath, parentContext)
-    : useRootRouterContext();
+    ? // eslint-disable-next-line react-hooks/rules-of-hooks
+      useParentRouterContext(rootPath, parentContext)
+    : // eslint-disable-next-line react-hooks/rules-of-hooks
+      useRootRouterContext();
 
   return (
-    <RouterContext.Provider value={{ rootPath, currentLocation, navigate, navigateAbsolute, replace, replaceAbsolute }}>
+    <RouterContext.Provider
+      value={{ rootPath, currentLocation, navigate, navigateAbsolute, replace, replaceAbsolute }}
+    >
       {children}
     </RouterContext.Provider>
   );

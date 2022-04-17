@@ -1,12 +1,15 @@
 import { apply, zip } from 'ramda';
 import { RouteParam } from '../models/Route';
 
-export const getRouteParams = <R extends string, P extends string>(routePath: R, path: P): RouteParam<P> =>
+export const getRouteParams = <R extends string, P extends string>(
+  routePath: R,
+  path: P,
+): RouteParam<P> =>
   Object.fromEntries(
     zip(routePath.split('/'), path.split('/'))
       .filter(([routePart]) => routePart.startsWith(':'))
       .map(([routePart, pathPart]) => [routePart.slice(1), pathPart]),
-  ) as any;
+  ) as RouteParam<P>;
 
 export const matchRoute = (routePath: string, path: string): boolean => {
   const routeParts = routePath.split('/');

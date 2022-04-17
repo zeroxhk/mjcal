@@ -13,7 +13,7 @@ export const FirstWuStep = ({ onNext, onBack }: { onNext: () => void; onBack: ()
     if (rounds.length > 0) {
       onNext();
     }
-  }, [rounds]);
+  }, [rounds, onNext]);
 
   const [isAddRoundModalOpened, openAddRoundModal, closeAddRoundModal] = useModal();
 
