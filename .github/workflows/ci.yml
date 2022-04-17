@@ -1,14 +1,10 @@
 name: CI
 
 on:
-  pull_request:
   push:
     branches:
       - master
-
-concurrency:
-  group: ci-${{ github.event.pull_request.number || github.run_id }}
-  cancel-in-progress: true
+  pull_request:
 
 jobs:
   ci:
