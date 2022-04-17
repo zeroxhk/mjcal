@@ -68,13 +68,13 @@ export const ScoringSettings = ({
         <ToggleButtonGroup
           value={settings.halfSpicyFrom}
           exclusive
-          onChange={(_, halfSpicyFrom: Settings['halfSpicyFrom']) =>
+          onChange={(_, halfSpicyFrom: number) =>
             halfSpicyFrom && onSetSettings({ ...settings, halfSpicyFrom })
           }
           fullWidth
           sx={{ mb: 1 }}
         >
-          <ToggleButton value="never">{t.halfSpicyFroms.never}</ToggleButton>
+          <ToggleButton value={Number.POSITIVE_INFINITY}>{t.halfSpicyFroms.never}</ToggleButton>
           <ToggleButton value={4}>4</ToggleButton>
         </ToggleButtonGroup>
         <Input
@@ -82,7 +82,11 @@ export const ScoringSettings = ({
             inputMode: 'numeric',
             pattern: '[0-9]{2}',
           }}
-          value={['never', 4].includes(settings.halfSpicyFrom) ? '' : settings.halfSpicyFrom}
+          value={
+            [Number.POSITIVE_INFINITY, 4].includes(settings.halfSpicyFrom)
+              ? ''
+              : settings.halfSpicyFrom
+          }
           onChange={event =>
             onSetSettings({ ...settings, halfSpicyFrom: Number.parseInt(event.target.value) || 4 })
           }

@@ -95,10 +95,7 @@ export const getScoresForRound = (
     ? [0, 0, 0, 0]
     : getScoresForRound1(round, {
         baseScore: scoringSettings.chipValue,
-        halfSpicyFrom:
-          scoringSettings.halfSpicyFrom === 'never'
-            ? Number.POSITIVE_INFINITY
-            : scoringSettings.halfSpicyFrom,
+        halfSpicyFrom: scoringSettings.halfSpicyFrom,
         isSelfTouch: round.isSelfTouch,
         chungJai: scoringSettings.chungJai,
       });
