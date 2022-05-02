@@ -1,8 +1,8 @@
 import { DialogContent, DialogTitle } from '@mui/material';
 import { useContext } from 'react';
 import { useT } from '../../../../locales/hooks/useT';
-import { AddRoundModalContext } from '../AddRoundModal';
 import { Actions } from '../components/Actions';
+import { AddRoundModalContext } from '../contexts/AddRoundModalContext';
 import { WinnerStepContent } from './WinnerStepContent';
 
 export const WinnerStep = () => {

@@ -2,8 +2,8 @@ import { DialogContent, DialogTitle } from '@mui/material';
 import { useContext } from 'react';
 import { useT } from '../../../../locales/hooks/useT';
 import { GameContext } from '../../../contexts/GameContext';
-import { AddRoundModalContext } from '../AddRoundModal';
 import { Actions } from '../components/Actions';
+import { AddRoundModalContext } from '../contexts/AddRoundModalContext';
 import { createRoundFromDraft } from '../models/DraftRound';
 import { LosersStepContent } from './LosersStepContent';
 

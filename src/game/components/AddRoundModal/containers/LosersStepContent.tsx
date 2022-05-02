@@ -3,8 +3,8 @@ import { without } from 'ramda';
 import { useContext, useEffect, useMemo } from 'react';
 import { PlayersContext } from '../../../../game-settings/contexts/PlayersContext';
 import { useT } from '../../../../locales/hooks/useT';
-import { AddRoundModalContext } from '../AddRoundModal';
 import { LoserButtonGroup } from '../components/LoserButtonGroup';
+import { AddRoundModalContext } from '../contexts/AddRoundModalContext';
 
 const usePotentialLoserIds = (): readonly string[] => {
   const { draftRound } = useContext(AddRoundModalContext);

@@ -2,9 +2,9 @@ import { Checkbox, FormControlLabel, Stack } from '@mui/material';
 import { useContext } from 'react';
 import { PlayersContext } from '../../../../game-settings/contexts/PlayersContext';
 import { useT } from '../../../../locales/hooks/useT';
-import { AddRoundModalContext } from '../AddRoundModal';
 import { FarnInput } from '../components/FarnInput';
 import { WinnerSelect } from '../components/WinnerSelect';
+import { AddRoundModalContext } from '../contexts/AddRoundModalContext';
 
 export const WinnerStepContent = () => {
   const t = useT();

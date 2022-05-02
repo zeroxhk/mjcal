@@ -1,41 +1,16 @@
 import { Dialog } from '@mui/material';
 import { nanoid } from 'nanoid';
 import { last } from 'ramda';
-import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { useCallback, useContext, useMemo, useState } from 'react';
 import { PlayersContext } from '../../../game-settings/contexts/PlayersContext';
 import { GameContext } from '../../contexts/GameContext';
 import { CurrentPlayersSelectStep } from './containers/CurrentPlayersSelectStep';
 import { LosersStep } from './containers/LosersStep';
 import { WinnerStep } from './containers/WinnerStep';
-import { DraftRound } from './models/DraftRound';
+import { AddRoundModalContextProvider } from './contexts/AddRoundModalContext';
+import { createDefaultDraftRound } from './models/DraftRound';
 
 const STEPS = [CurrentPlayersSelectStep, WinnerStep, LosersStep] as const;
-
-const DEFAULT_DRAFT_ROUND: DraftRound = {
-  isTied: false,
-  playerIds: [],
-  farn: 3,
-  winnerId: undefined,
-  loserIds: [],
-  isSelfTouch: false,
-};
-
-const useDraftRound = (
-  initial: DraftRound,
-): [draftRound: DraftRound, updateDraftRound: (partialDraft: Partial<DraftRound>) => void] => {
-  const [draftRound, setDraftRound] = useState(initial);
-  return [
-    draftRound,
-    useCallback(
-      partialDraftRound =>
-        setDraftRound(currentDraft => ({
-          ...currentDraft,
-          ...partialDraftRound,
-        })),
-      [],
-    ),
-  ];
-};
 
 const useStep = (): [StepComponent: () => JSX.Element, next: () => void, back: () => void] => {
   const [step, setStep] = useState<number>(0);
@@ -59,35 +34,23 @@ const useDefaultPlayerIds = (): readonly string[] => {
   return last(rounds)?.playerIds ?? allPlayers.slice(0, 4).map(({ id }) => id);
 };
 
-export const AddRoundModalContext = createContext<{
-  draftRound: DraftRound;
-  updateDraftRound: (partialDraft: Partial<DraftRound>) => void;
-  next: () => void;
-  back: () => void;
-  close: () => void;
-}>({
-  draftRound: DEFAULT_DRAFT_ROUND,
-  updateDraftRound: () => {},
-  next: () => {},
-  back: () => {},
-  close: () => {},
-});
-
 const AddRoundModalImpl = ({ isOpened, onClose }: { isOpened: boolean; onClose: () => void }) => {
   const [StepComponent, next, back] = useStep();
 
-  const [draftRound, updateDraftRound] = useDraftRound({
-    ...DEFAULT_DRAFT_ROUND,
-    playerIds: useDefaultPlayerIds(),
-  });
-
   return (
     <Dialog open={isOpened} onClose={onClose} fullWidth>
-      <AddRoundModalContext.Provider
-        value={{ draftRound, updateDraftRound, next, back, close: onClose }}
+      <AddRoundModalContextProvider
+        initial={{
+          draftRound: createDefaultDraftRound({
+            playerIds: useDefaultPlayerIds(),
+          }),
+        }}
+        next={next}
+        back={back}
+        close={onClose}
       >
         <StepComponent />
-      </AddRoundModalContext.Provider>
+      </AddRoundModalContextProvider>
     </Dialog>
   );
 };

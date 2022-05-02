@@ -28,6 +28,16 @@ export const createRoundFromDraft = (draftRound: DraftRound): Round => {
   });
 };
 
+export const createDefaultDraftRound = (overwrite: Partial<DraftRound> = {}): DraftRound => ({
+  isTied: false,
+  playerIds: [],
+  farn: 3,
+  winnerId: undefined,
+  loserIds: [],
+  isSelfTouch: false,
+  ...overwrite,
+});
+
 const isLengthOf4 = <X>(xs: readonly X[]): xs is readonly [X, X, X, X] => {
   return xs.length === 4;
 };
