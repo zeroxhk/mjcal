@@ -33,15 +33,11 @@ export const LosersStepContent = () => {
             control={
               <Checkbox
                 checked={isBao}
-                onChange={(_, isBao) => {
-                  if (!draftRound.winnerId) {
-                    throw new Error('winnerId is undefined');
-                  }
-
+                onChange={(_, isBao) =>
                   updateDraftRound({
                     loserIds: isBao ? [] : potentialLoserIds,
-                  });
-                }}
+                  })
+                }
               />
             }
             label={`${t.isBao} 🍞`}
