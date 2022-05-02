@@ -16,7 +16,9 @@ export default defineConfig({
     copyFileWithinBundle('index.html', '404.html'),
   ],
   test: {
+    globals: true,
     environment: 'happy-dom',
-    include: ['**/__tests__/*.test.ts'],
+    include: ['**/__tests__/*.test.{ts,tsx}'],
+    setupFiles: 'test/setup.ts',
   },
 });
