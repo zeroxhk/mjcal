@@ -1,6 +1,6 @@
 import { Checkbox, FormControlLabel, FormGroup, Stack } from '@mui/material';
 import { without } from 'ramda';
-import { useContext, useMemo } from 'react';
+import { useContext, useEffect, useMemo } from 'react';
 import { PlayersContext } from '../../../../game-settings/contexts/PlayersContext';
 import { useT } from '../../../../locales/hooks/useT';
 import { AddRoundModalContext } from '../AddRoundModal';
@@ -16,13 +16,18 @@ export const LosersStepContent = () => {
     return without([draftRound.winnerId], draftRound.playerIds);
   }, [draftRound.playerIds, draftRound.winnerId]);
 
-  const isBao = useMemo(() => draftRound.loserIds.length === 3, [draftRound.loserIds]);
+  useEffect(() => {
+    if (!draftRound.isSelfTouch) return;
+    updateDraftRound({ loserIds: potentialLoserIds });
+  }, [draftRound.isSelfTouch, updateDraftRound, potentialLoserIds]);
+
+  const isBao = useMemo(() => draftRound.loserIds.length < 3, [draftRound.loserIds]);
 
   return (
     <Stack gap={2}>
       <LoserButtonGroup
         loserIds={draftRound.loserIds}
-        disabled={draftRound.isSelfTouch && isBao}
+        disabled={draftRound.isSelfTouch && !isBao}
         onLoserIdsChange={loserIds => updateDraftRound({ loserIds })}
         players={potentialLoserIds.map(getPlayerById)}
       />
