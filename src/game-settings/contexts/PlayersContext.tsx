@@ -14,11 +14,22 @@ export const PlayersContext = createContext<{
   },
 });
 
-export const PlayersContextProvider = ({ children }: { children: ReactNode }) => {
+const usePlayers = (initialPlayer?: Player[]) => {
   const t = useT();
-  const [players, setPlayers] = useState<Player[]>(
-    Array.from({ length: 4 }, (_, i) => createPlayer({ name: `${t.player} ${i + 1}` })),
+  return useState<Player[]>(
+    initialPlayer ??
+      Array.from({ length: 4 }, (_, i) => createPlayer({ name: `${t.player} ${i + 1}` })),
   );
+};
+
+export const PlayersContextProvider = ({
+  initial,
+  children,
+}: {
+  initial?: { players?: Player[] };
+  children: ReactNode;
+}) => {
+  const [players, setPlayers] = usePlayers(initial?.players);
 
   const idToPlayerMap = useMemo(
     () => new Map(players.map<[string, Player]>(player => [player.id, player])),
