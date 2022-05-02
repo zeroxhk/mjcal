@@ -39,7 +39,7 @@ export const LosersStepContent = () => {
                   }
 
                   updateDraftRound({
-                    loserIds: isBao ? potentialLoserIds : [],
+                    loserIds: isBao ? [] : potentialLoserIds,
                   });
                 }}
               />
