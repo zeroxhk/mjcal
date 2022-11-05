@@ -5,9 +5,10 @@ export const screenshotTests = (
   for (const [name, url, beforeSnap = () => {}] of tests) {
     const screenshotName = namePrefix ? `${namePrefix} - ${name}` : name;
     it(`should match screenshots for "${screenshotName}"`, () => {
-      cy.visit(url, { failOnStatusCode: false });
+      cy.visit(url);
+      cy.get('[data-test-id=App]');
       beforeSnap();
-      cy.percySnapshot(screenshotName);
+      cy.percySnapshot(`${screenshotName} - ${url}`);
     });
   }
 };

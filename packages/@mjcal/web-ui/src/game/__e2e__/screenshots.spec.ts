@@ -14,5 +14,5 @@ screenshotTests(
     ['Table Page with 1 round', '/game/table', add1Round],
     ['Settings Page', '/game/settings'],
   ],
-  { namePrefix: 'Game' },
+  { namePrefix: 'game' },
 );

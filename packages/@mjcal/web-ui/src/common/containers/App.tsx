@@ -7,7 +7,7 @@ import '../styles/scrollbars.css';
 
 export const App = () => {
   return (
-    <>
+    <div data-test-id="App">
       <Header />
       <RouterViewSwitch
         views={[
@@ -29,6 +29,6 @@ export const App = () => {
           }),
         ]}
       />
-    </>
+    </div>
   );
 };

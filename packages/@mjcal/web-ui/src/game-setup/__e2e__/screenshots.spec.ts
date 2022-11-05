@@ -6,5 +6,5 @@ screenshotTests(
     ['Players step', '/open-table/players'],
     ['First wu step', '/open-table/first-wu'],
   ],
-  { namePrefix: 'Game setup' },
+  { namePrefix: 'game-setup' },
 );
