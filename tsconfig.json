@@ -2,8 +2,10 @@
 {
   "include": [],
   "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.e2e.json" },
-    { "path": "./tsconfig.node.json" }
+    { "path": "./packages/@mjcal/web-ui/tsconfig.app.json" },
+    { "path": "./packages/@mjcal/web-ui/tsconfig.e2e.json" },
+    { "path": "./packages/@mjcal/web-ui/tsconfig.node.json" },
+    { "path": "./packages/vite-plugin-copy-file-within-bundle" },
+    { "path": "./packages/vite-plugin-inject-ga" }
   ]
 }

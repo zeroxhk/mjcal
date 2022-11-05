@@ -3,9 +3,9 @@
   "private": true,
   "version": "0.0.0",
   "scripts": {
-    "build": "yarn workspace @mjcal/web-ui run build",
-    "dev": "yarn workspace @mjcal/web-ui run dev",
-    "test": "yarn workspace @mjcal/web-ui run test",
+    "build": "yarn workspaces foreach --topological-dev -ip run build",
+    "dev": "yarn workspace @mjcal/web-ui dev",
+    "test": "yarn workspace @mjcal/web-ui test",
     "typecheck": "tsc --build",
     "prettier": "prettier packages",
     "prettier:write": "prettier packages --write",
