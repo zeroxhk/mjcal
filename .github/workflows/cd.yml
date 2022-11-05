@@ -15,18 +15,18 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: '16'
-      - run: npm ci
+          node-version: 16
+      - run: yarn --immutable
       - name: Build
-        run: npm run build
+        run: yarn build
       - name: Archive Production Artifact
         uses: actions/upload-artifact@v2
         with:
           name: dist
-          path: dist
+          path: packages/@mjcal/web-ui/dist
   deploy:
     name: Deploy
     needs: build

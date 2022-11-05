@@ -1,4 +1,4 @@
-import { defineConfig } from 'cypress'
+import { defineConfig } from 'cypress';
 
 export default defineConfig({
   projectId: 'soa145',
@@ -8,8 +8,7 @@ export default defineConfig({
   video: false,
   videosFolder: './src/__e2e__/videos',
   e2e: {
-    setupNodeEvents(on, config) {},
     baseUrl: 'http://localhost:3001',
     specPattern: './src/**/__e2e__/*.spec.ts',
   },
-})
+});

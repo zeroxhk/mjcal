@@ -4,5 +4,5 @@
     "types": ["cypress", "@percy/cypress"],
     "isolatedModules": false
   },
-  "include": ["src/**/__e2e__"]
+  "include": ["packages/**/src/**/__e2e__"]
 }

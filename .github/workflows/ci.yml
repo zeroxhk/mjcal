@@ -15,42 +15,42 @@ jobs:
     name: Type check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: '16'
-      - run: npm ci
-      - run: npm run typecheck
+          node-version: 16
+      - run: yarn --immutable
+      - run: yarn typecheck
   format:
     name: Code Format
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: '16'
-      - run: npm ci
-      - run: npm run prettier -- -c
+          node-version: 16
+      - run: yarn --immutable
+      - run: yarn prettier -c
   lint:
     name: Lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: '16'
-      - run: npm ci
-      - run: npm run lint
+          node-version: 16
+      - run: yarn --immutable
+      - run: yarn lint
   unit_test:
     name: Unit test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: '16'
-      - run: npm ci
-      - run: npm test
+          node-version: 16
+      - run: yarn --immutable
+      - run: yarn test
   e2e:
     name: E2E test
     runs-on: ubuntu-latest
@@ -61,10 +61,10 @@ jobs:
     steps:
       - name: Install Chinesse Fonts
         run: sudo apt-get install -y fonts-wqy-zenhei
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: 16
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
@@ -74,8 +74,9 @@ jobs:
           browser: chrome
           record: true
           config: video=true
-          build: npm run build
-          start: npm run serve
+          working-directory: packages/@mjcal/web-ui
+          build: yarn build
+          start: yarn serve
           command-prefix: 'percy exec --parallel -- npx'
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
@@ -90,19 +91,19 @@ jobs:
       PERCY_TOKEN: ${{ secrets.PERCY_TOKEN }}
       PERCY_PARALLEL_NONCE: ${{ github.run_id }}-${{ github.run_number }}-${{ github.run_attempt }}
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: '16'
-      - run: npm ci
+          node-version: 16
+      - run: yarn --immutable
       - run: npx percy build:finalize
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          node-version: '16'
-      - run: npm ci
-      - run: npm run build
+          node-version: 16
+      - run: yarn --immutable
+      - run: yarn build
