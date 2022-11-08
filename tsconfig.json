@@ -2,6 +2,7 @@
 {
   "include": [],
   "references": [
+    { "path": "./packages/@mjcal/functions/tsconfig.json" },
     { "path": "./packages/@mjcal/web-ui/tsconfig.app.json" },
     { "path": "./packages/@mjcal/web-ui/tsconfig.e2e.json" },
     { "path": "./packages/@mjcal/web-ui/tsconfig.node.json" },

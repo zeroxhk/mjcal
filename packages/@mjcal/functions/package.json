@@ -1,0 +1,25 @@
+{
+  "name": "@mjcal/functions",
+  "type": "module",
+  "scripts": {
+    "build": "esbuild $(find src -name '*.ts') --platform=node --outdir=dist",
+    "build:watch": "yarn build --watch",
+    "serve": "npm run build && firebase emulators:start --only functions",
+    "shell": "npm run build && firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "16"
+  },
+  "main": "dist/index.js",
+  "dependencies": {
+    "firebase-admin": "^11.2.0",
+    "firebase-functions": "^4.0.2"
+  },
+  "devDependencies": {
+    "esbuild": "^0.15.13"
+  },
+  "private": true
+}

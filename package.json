@@ -18,10 +18,10 @@
     "ramda-adjunct": "^3.3.0"
   },
   "devDependencies": {
-    "@types/ramda": "^0.28.18",
-    "@typescript-eslint/eslint-plugin": "^5.42.0",
-    "@typescript-eslint/parser": "^5.42.0",
-    "eslint": "^8.26.0",
+    "@types/ramda": "^0.28.19",
+    "@typescript-eslint/eslint-plugin": "^5.42.1",
+    "@typescript-eslint/parser": "^5.42.1",
+    "eslint": "^8.27.0",
     "eslint-plugin-react": "^7.31.10",
     "eslint-plugin-react-hooks": "^4.6.0",
     "prettier": "^2.7.1",
@@ -29,8 +29,7 @@
     "utility-types": "^3.10.0"
   },
   "workspaces": [
-    "packages/*",
-    "packages/@mjcal/*"
+    "packages/**"
   ],
   "packageManager": "yarn@3.2.4"
 }
